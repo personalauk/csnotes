@@ -8,13 +8,15 @@ csnotes.htm - AngularJS app to rapidly build customer service call notes
 Alan Lee 20180614
 -->
 
+<!--TODO: CSS-->
+    
 </head>
 <body ng-app="csnApp" ng-controller="csnController"
       ng-init="vCaller='MR';vAuthorised=false"
 >
     
 <button onclick="copyNotes()">Copy</button>
-<input id="NotesBoxId" type="text" value="{{ notes() }}" style="width: 90%" />
+<input id="idNotesBox" type="text" value="{{ notes() }}" style="width: 90%" />
 
 <!--
 <p>{{ vCaller +' '+ vAuthorised }}</p>      
@@ -57,15 +59,10 @@ Alan Lee 20180614
 
 <script>
 function copyNotes() {
-    var notesBox = document.getElementById("NotesBoxId");
+    var notesBox = document.getElementById("idNotesBox");
     notesBox.select();
     document.execCommand("copy");
-/* https://stackoverflow.com/questions/8069999/deselect-text-with-javascript
-    setTimeout(function() {
-        notesBox.selectionStart=0;
-        notesBox.selectionEnd=0;
-    }, 0);
-*/
+    notesBox.blur();  //removes selection
 }
 
 var PLUS = ' + '; //builds lists of subjects
