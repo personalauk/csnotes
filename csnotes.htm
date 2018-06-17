@@ -13,7 +13,9 @@ Alan Lee 20180614
       ng-init="vCaller='MR';vAuthorised=false"
 >
     
-<input type="text" value="{{ notes() }}"/>
+<button onclick="copyNotes()">Copy</button>
+<input id="NotesBoxId" type="text" value="{{ notes() }}" style="width: 90%" />
+
 <!--
 <p>{{ vCaller +' '+ vAuthorised }}</p>      
 <p>{{ sectCaller() }}</p>      
@@ -54,6 +56,18 @@ Alan Lee 20180614
     
 
 <script>
+function copyNotes() {
+    var notesBox = document.getElementById("NotesBoxId");
+    notesBox.select();
+    document.execCommand("copy");
+/* https://stackoverflow.com/questions/8069999/deselect-text-with-javascript
+    setTimeout(function() {
+        notesBox.selectionStart=0;
+        notesBox.selectionEnd=0;
+    }, 0);
+*/
+}
+
 var PLUS = ' + '; //builds lists of subjects
 var SEP = ' | '; //separates sections
 var app = angular.module('csnApp', []);
@@ -81,15 +95,14 @@ app.controller('csnController', function($scope) {
         return ($scope.vSubjectMedical) ? 'Medical' + PLUS : '';
     };
     
-    
     $scope.sectSubjects = function() { 
-        var local =
+        var subjects =
         $scope.noteSubjectAutorenewal() + 
         $scope.noteSubjectDate() + 
         $scope.noteSubjectDestination() + 
         $scope.noteSubjectMedical();
         //remove final PLUS
-        return (local.length > 0) ? local.substr(0, local.length - PLUS.length) : '';
+        return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : '';
     };
 
     
