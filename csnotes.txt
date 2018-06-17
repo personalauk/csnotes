@@ -1,0 +1,8 @@
+    $scope.sectSubject = ($scope.vSubjectQuery) ? 'Query: ' : '';
+    $scope.sectSubject += ($scope.vSubjectOptout) ? 'Opted out of AR. ' : '';
+    
+    <span ng-show="vSubjectQuery">Query: </span>
+<span ng-show="vSubjectOptout">opted out of AR </span>
+<span ng-show="vSubjectDates">Dates </span>
+<span ng-show="vSubjectDestination">Destination </span>
+<span ng-show="vSubjectMedical">Medical </span>

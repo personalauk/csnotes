@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<!--
+csnotes.htm - AngularJS app to rapidly build customer service call notes
+Alan Lee 20180614
+-->
+
+</head>
+<body ng-app="csnApp" ng-controller="csnController"
+      ng-init="vCaller='MR';vAuthorised=false"
+>
+    
+<input type="text" value="{{ sectCaller() }}"/>
+<p>{{ vCaller +' '+ vAuthorised }}</p>      
+<p>{{ sectCaller() }}</p>      
+    
+<p>caller: 
+<input type="radio" ng-model="vCaller" value="MR">MR
+<input type="radio" ng-model="vCaller" value="MRS">MRS
+<input type="radio" ng-model="vCaller" value="MR/MRS">MR/MRS
+<input type="radio" ng-model="vCaller" value="MS">MS
+<input type="radio" ng-model="vCaller" value="MISS">MISS
+<input type="radio" ng-model="vCaller" value="DR">DR
+<input type="radio" ng-model="vCaller" value="Organiser">Org
+<input type="radio" ng-model="vCaller" value="Caller">Caller
+<!--TODO: named-->
+<input type="checkbox" ng-model="vAuthorised">Auth
+</p>
+
+    
+<p>subject: 
+<input type="checkbox" ng-model="vSubjectQuery" value="Query">Query
+<br/>    
+<input type="checkbox" ng-model="vSubjectOptout" value="Optout">AROO
+<input type="checkbox" ng-model="vSubjectDate" value="Date">Dates
+<input type="checkbox" ng-model="vSubjectDestination" value="Destination">Dest
+<input type="checkbox" ng-model="vSubjectMedical" value="Medical">Medical
+</p>
+
+    
+    
+
+<script>
+var PLUS = ' + '; //builds lists of subjects
+var app = angular.module('csnApp', []);
+    
+app.controller('csnController', function($scope) {
+    $scope.noteAuthorised = function() {
+        return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : '';
+    };
+    $scope.sectCaller = function() {
+        return $scope.vCaller + $scope.noteAuthorised() + ' called';
+    };
+    
+    
+    
+    
+/*    $scope.noteSubjectDate = ($scope.vSubjectDate) ? 'Dates' + PLUS : '';
+    $scope.noteSubjectDestination = ($scope.vSubjectDestination) ? 'Destination' + PLUS : '';
+    $scope.noteSubjectMedical = ($scope.vSubjectMedical) ? 'Medical' + PLUS : '';
+    
+    $scope.sectSubjects = 
+        $scope.noteSubjectDate + 
+        $scope.noteSubjectDestination + 
+        $scope.noteSubjectMedical;
+    if ($scope.sectSubjects.length > 0) { //remove final PLUS
+        $scope.sectSubjects = $scope.sectSubjects.substr(0, $scope.sectSubjects.length - PLUS.length);
+    }
+
+    //TODO: conditional build
+    $scope.note = $scope.sectCaller ;//                    + ' | ' + $scope.sectSubjects;
+*/});
+</script> 
+    
+
+
+</body>
+</html>
