@@ -13,9 +13,13 @@ Alan Lee 20180614
       ng-init="vCaller='MR';vAuthorised=false"
 >
     
-<input type="text" value="{{ sectCaller() }}"/>
+<input type="text" value="{{ notes() }}"/>
+<!--
 <p>{{ vCaller +' '+ vAuthorised }}</p>      
 <p>{{ sectCaller() }}</p>      
+<p>{{ sectSubjects() }}</p>      
+-->
+
     
 <p>caller: 
 <input type="radio" ng-model="vCaller" value="MR">MR
@@ -28,26 +32,34 @@ Alan Lee 20180614
 <input type="radio" ng-model="vCaller" value="Caller">Caller
 <!--TODO: named-->
 <input type="checkbox" ng-model="vAuthorised">Auth
+<!--TODO: can't dpa-->
 </p>
 
     
 <p>subject: 
-<input type="checkbox" ng-model="vSubjectQuery" value="Query">Query
-<br/>    
-<input type="checkbox" ng-model="vSubjectOptout" value="Optout">AROO
+<input type="checkbox" ng-model="vSubjectAutorenewal" value="Autorenewal">AR
 <input type="checkbox" ng-model="vSubjectDate" value="Date">Dates
 <input type="checkbox" ng-model="vSubjectDestination" value="Destination">Dest
 <input type="checkbox" ng-model="vSubjectMedical" value="Medical">Medical
 </p>
 
     
+<p>action: 
+<input type="checkbox" ng-model="vActionQuery" value="Query">Query
+<input type="checkbox" ng-model="vActionOptout" value="Optout">AROO
+<input type="checkbox" ng-model="vActionUnwanted" value="Unwanted autorenewal">UNW AR
+</p>    
+
+    
     
 
 <script>
 var PLUS = ' + '; //builds lists of subjects
+var SEP = ' | '; //separates sections
 var app = angular.module('csnApp', []);
     
 app.controller('csnController', function($scope) {
+
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : '';
     };
@@ -56,23 +68,36 @@ app.controller('csnController', function($scope) {
     };
     
     
+    $scope.noteSubjectAutorenewal = function() {
+        return ($scope.vSubjectAutorenewal) ? 'Autorenewal' + PLUS : '';
+    };
+    $scope.noteSubjectDate = function() {
+        return ($scope.vSubjectDate) ? 'Dates' + PLUS : '';
+    };
+    $scope.noteSubjectDestination = function() {
+        return ($scope.vSubjectDestination) ? 'Destination' + PLUS : '';
+    };
+    $scope.noteSubjectMedical = function() {
+        return ($scope.vSubjectMedical) ? 'Medical' + PLUS : '';
+    };
     
     
-/*    $scope.noteSubjectDate = ($scope.vSubjectDate) ? 'Dates' + PLUS : '';
-    $scope.noteSubjectDestination = ($scope.vSubjectDestination) ? 'Destination' + PLUS : '';
-    $scope.noteSubjectMedical = ($scope.vSubjectMedical) ? 'Medical' + PLUS : '';
-    
-    $scope.sectSubjects = 
-        $scope.noteSubjectDate + 
-        $scope.noteSubjectDestination + 
-        $scope.noteSubjectMedical;
-    if ($scope.sectSubjects.length > 0) { //remove final PLUS
-        $scope.sectSubjects = $scope.sectSubjects.substr(0, $scope.sectSubjects.length - PLUS.length);
-    }
+    $scope.sectSubjects = function() { 
+        var local =
+        $scope.noteSubjectAutorenewal() + 
+        $scope.noteSubjectDate() + 
+        $scope.noteSubjectDestination() + 
+        $scope.noteSubjectMedical();
+        //remove final PLUS
+        return (local.length > 0) ? local.substr(0, local.length - PLUS.length) : '';
+    };
 
+    
     //TODO: conditional build
-    $scope.note = $scope.sectCaller ;//                    + ' | ' + $scope.sectSubjects;
-*/});
+    $scope.notes = function() {
+        return $scope.sectCaller() + SEP + $scope.sectSubjects();
+    };
+});
 </script> 
     
 
