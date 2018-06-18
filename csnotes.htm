@@ -54,7 +54,7 @@ TODO:
 <input type="checkbox" ng-model="vSubjectAco" />ACO
 <input type="checkbox" ng-model="vSubjectDepartment" />Dept
 <input type="checkbox" ng-model="vSubjectPolicyWording" />PW
-<input type="checkbox" ng-model="vSubjectTcs" />T+Cs
+<input type="checkbox" ng-model="vSubjectTcs" />T&amp;Cs
 <input type="checkbox" ng-model="vSubjectStToAmt" />ST->AMT
 <input type="checkbox" ng-model="vSubjectCancellation" />Cancel
 <input type="checkbox" ng-model="vSubjectAge" />Age
@@ -131,7 +131,7 @@ app.controller('csnController', function($scope) {
         return ($scope.vSubjectPolicyWording) ? 'Policy Wording' + PLUS : '';
     };
     $scope.noteSubjectTcs = function() {
-        return ($scope.vSubjectTcs) ? 'T+Cs' + PLUS : '';
+        return ($scope.vSubjectTcs) ? 'T&Cs' + PLUS : '';
     };
     $scope.noteSubjectStToAmt = function() {
         return ($scope.vSubjectStToAmt) ? 'ST->AMT' + PLUS : '';
