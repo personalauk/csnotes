@@ -29,50 +29,50 @@ TODO:
 
 <p>caller: 
 <!--    TODO: transferred + outbound + info-->
-<input type="radio" ng-model="vCaller" value="MR">MR
-<input type="radio" ng-model="vCaller" value="MRS">MRS
-<input type="radio" ng-model="vCaller" value="MR/MRS">MR/MRS
-<input type="radio" ng-model="vCaller" value="MS">MS
-<input type="radio" ng-model="vCaller" value="MISS">MISS
-<input type="radio" ng-model="vCaller" value="DR">DR
-<input type="radio" ng-model="vCaller" value="Organiser">Org
-<input type="radio" ng-model="vCaller" value="Caller">Caller
+<input type="radio" ng-model="vCaller" value="MR" />MR
+<input type="radio" ng-model="vCaller" value="MRS" />MRS
+<input type="radio" ng-model="vCaller" value="MR/MRS" />MR/MRS
+<input type="radio" ng-model="vCaller" value="MS" />MS
+<input type="radio" ng-model="vCaller" value="MISS" />MISS
+<input type="radio" ng-model="vCaller" value="DR" />DR
+<input type="radio" ng-model="vCaller" value="Organiser" />Org
+<input type="radio" ng-model="vCaller" value="Caller" />Caller
 <!--TODO: named-->
-<input type="checkbox" ng-model="vAuthorised">Auth
+<input type="checkbox" ng-model="vAuthorised" />Auth
 <!--TODO: can't dpa + no answer-->
 </p>
 
     
 <p>subject: 
-<input type="checkbox" ng-model="vSubjectAutorenewal">AR
-<input type="checkbox" ng-model="vSubjectDocuments">Docs
-<input type="checkbox" ng-model="vSubjectDiscount">Discount
-<input type="checkbox" ng-model="vSubjectDate">Dates
-<input type="checkbox" ng-model="vSubjectDestination">Dest
-<input type="checkbox" ng-model="vSubjectMedical">Medical
-<input type="checkbox" ng-model="vSubjectReferral">Referral
-<input type="checkbox" ng-model="vSubjectAco">ACO
-<input type="checkbox" ng-model="vSubjectDepartment">Dept
-<input type="checkbox" ng-model="vSubjectPolicyWording">PW
-<input type="checkbox" ng-model="vSubjectTcs">T+Cs
-<input type="checkbox" ng-model="vSubjectStToAmt">ST->AMT
-<input type="checkbox" ng-model="vSubjectCancellation">Cancel
-<input type="checkbox" ng-model="vSubjectAge">Age
-<input type="checkbox" ng-model="vSubjectName">Name
-<input type="checkbox" ng-model="vSubjectAddress">Address
-<input type="checkbox" ng-model="vSubjectPhone">Phone
-<input type="checkbox" ng-model="vSubjectEmail">Email
-<input type="checkbox" ng-model="vSubjectComplaint">Complaint
-<input type="checkbox" ng-model="vSubjectCallListening">Call List
-<input type="checkbox" ng-model="vSubjectQaReport">QA
-<input type="checkbox" ng-model="vSubjectDeceased">Deceased
+<input type="checkbox" ng-model="vSubjectAutorenewal" />AR
+<input type="checkbox" ng-model="vSubjectDocuments" />Docs
+<input type="checkbox" ng-model="vSubjectDiscount" />Discount
+<input type="checkbox" ng-model="vSubjectDate" />Dates
+<input type="checkbox" ng-model="vSubjectDestination" />Dest
+<input type="checkbox" ng-model="vSubjectMedical" />Medical
+<input type="checkbox" ng-model="vSubjectReferral" />Referral
+<input type="checkbox" ng-model="vSubjectAco" />ACO
+<input type="checkbox" ng-model="vSubjectDepartment" />Dept
+<input type="checkbox" ng-model="vSubjectPolicyWording" />PW
+<input type="checkbox" ng-model="vSubjectTcs" />T+Cs
+<input type="checkbox" ng-model="vSubjectStToAmt" />ST->AMT
+<input type="checkbox" ng-model="vSubjectCancellation" />Cancel
+<input type="checkbox" ng-model="vSubjectAge" />Age
+<input type="checkbox" ng-model="vSubjectName" />Name
+<input type="checkbox" ng-model="vSubjectAddress" />Address
+<input type="checkbox" ng-model="vSubjectPhone" />Phone
+<input type="checkbox" ng-model="vSubjectEmail" />Email
+<input type="checkbox" ng-model="vSubjectComplaint" />Complaint
+<input type="checkbox" ng-model="vSubjectCallListening" />Call List
+<input type="checkbox" ng-model="vSubjectQaReport" />QA
+<input type="checkbox" ng-model="vSubjectDeceased" />Deceased
 </p>
 
     
 <p>action: 
-<input type="checkbox" ng-model="vActionQuery">Query
-<input type="checkbox" ng-model="vActionOptout">AROO
-<input type="checkbox" ng-model="vActionUnwanted">UNW AR
+<input type="checkbox" ng-model="vActionQuery" />Query
+<input type="checkbox" ng-model="vActionOptout" />AROO
+<input type="checkbox" ng-model="vActionUnwanted" />UNW AR
 </p>    
 
     
@@ -188,7 +188,7 @@ app.controller('csnController', function($scope) {
             $scope.noteSubjectPhone() + 
             $scope.noteSubjectEmail() + 
             $scope.noteSubjectComplaint() + 
-            $scope.noteSubjectCallList() +
+            $scope.noteSubjectCallListening() +
             $scope.noteSubjectQaReport() +
             $scope.noteSubjectDeceased();
         //remove final PLUS
