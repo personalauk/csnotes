@@ -9,6 +9,14 @@ Alan Lee 20180614
 -->
 
 <!--TODO: CSS-->
+
+<!--
+TODO:
+    Reset btn
+    History button that opens text file & each note has datetime
+-->
+    
+    
     
 </head>
 <body ng-app="csnApp" ng-controller="csnController"
@@ -18,14 +26,9 @@ Alan Lee 20180614
 <button onclick="copyNotes()">Copy</button>
 <input id="idNotesBox" type="text" value="{{ notes() }}" style="width: 90%" />
 
-<!--
-<p>{{ vCaller +' '+ vAuthorised }}</p>      
-<p>{{ sectCaller() }}</p>      
-<p>{{ sectSubjects() }}</p>      
--->
 
-    
 <p>caller: 
+<!--    TODO: transferred + outbound + info-->
 <input type="radio" ng-model="vCaller" value="MR">MR
 <input type="radio" ng-model="vCaller" value="MRS">MRS
 <input type="radio" ng-model="vCaller" value="MR/MRS">MR/MRS
@@ -36,22 +39,40 @@ Alan Lee 20180614
 <input type="radio" ng-model="vCaller" value="Caller">Caller
 <!--TODO: named-->
 <input type="checkbox" ng-model="vAuthorised">Auth
-<!--TODO: can't dpa-->
+<!--TODO: can't dpa + no answer-->
 </p>
 
     
 <p>subject: 
-<input type="checkbox" ng-model="vSubjectAutorenewal" value="Autorenewal">AR
-<input type="checkbox" ng-model="vSubjectDate" value="Date">Dates
-<input type="checkbox" ng-model="vSubjectDestination" value="Destination">Dest
-<input type="checkbox" ng-model="vSubjectMedical" value="Medical">Medical
+<input type="checkbox" ng-model="vSubjectAutorenewal">AR
+<input type="checkbox" ng-model="vSubjectDocuments">Docs
+<input type="checkbox" ng-model="vSubjectDiscount">Discount
+<input type="checkbox" ng-model="vSubjectDate">Dates
+<input type="checkbox" ng-model="vSubjectDestination">Dest
+<input type="checkbox" ng-model="vSubjectMedical">Medical
+<input type="checkbox" ng-model="vSubjectReferral">Referral
+<input type="checkbox" ng-model="vSubjectAco">ACO
+<input type="checkbox" ng-model="vSubjectDepartment">Dept
+<input type="checkbox" ng-model="vSubjectPolicyWording">PW
+<input type="checkbox" ng-model="vSubjectTcs">T+Cs
+<input type="checkbox" ng-model="vSubjectStToAmt">ST->AMT
+<input type="checkbox" ng-model="vSubjectCancellation">Cancel
+<input type="checkbox" ng-model="vSubjectAge">Age
+<input type="checkbox" ng-model="vSubjectName">Name
+<input type="checkbox" ng-model="vSubjectAddress">Address
+<input type="checkbox" ng-model="vSubjectPhone">Phone
+<input type="checkbox" ng-model="vSubjectEmail">Email
+<input type="checkbox" ng-model="vSubjectComplaint">Complaint
+<input type="checkbox" ng-model="vSubjectCallListening">Call List
+<input type="checkbox" ng-model="vSubjectQaReport">QA
+<input type="checkbox" ng-model="vSubjectDeceased">Deceased
 </p>
 
     
 <p>action: 
-<input type="checkbox" ng-model="vActionQuery" value="Query">Query
-<input type="checkbox" ng-model="vActionOptout" value="Optout">AROO
-<input type="checkbox" ng-model="vActionUnwanted" value="Unwanted autorenewal">UNW AR
+<input type="checkbox" ng-model="vActionQuery">Query
+<input type="checkbox" ng-model="vActionOptout">AROO
+<input type="checkbox" ng-model="vActionUnwanted">UNW AR
 </p>    
 
     
@@ -82,6 +103,12 @@ app.controller('csnController', function($scope) {
     $scope.noteSubjectAutorenewal = function() {
         return ($scope.vSubjectAutorenewal) ? 'Autorenewal' + PLUS : '';
     };
+    $scope.noteSubjectDocuments = function() {
+        return ($scope.vSubjectDocuments) ? 'Documents' + PLUS : '';
+    };
+    $scope.noteSubjectDiscount = function() {
+        return ($scope.vSubjectDiscount) ? 'Discount' + PLUS : '';
+    };
     $scope.noteSubjectDate = function() {
         return ($scope.vSubjectDate) ? 'Dates' + PLUS : '';
     };
@@ -91,13 +118,79 @@ app.controller('csnController', function($scope) {
     $scope.noteSubjectMedical = function() {
         return ($scope.vSubjectMedical) ? 'Medical' + PLUS : '';
     };
+    $scope.noteSubjectReferral = function() {
+        return ($scope.vSubjectReferral) ? 'Referral' + PLUS : '';
+    };
+    $scope.noteSubjectAco = function() {
+        return ($scope.vSubjectAco) ? 'ACO' + PLUS : '';
+    };
+    $scope.noteSubjectDepartment = function() {
+        return ($scope.vSubjectDepartment) ? 'Department' + PLUS : '';
+    };
+    $scope.noteSubjectPolicyWording = function() {
+        return ($scope.vSubjectPolicyWording) ? 'Policy Wording' + PLUS : '';
+    };
+    $scope.noteSubjectTcs = function() {
+        return ($scope.vSubjectTcs) ? 'T+Cs' + PLUS : '';
+    };
+    $scope.noteSubjectStToAmt = function() {
+        return ($scope.vSubjectStToAmt) ? 'ST->AMT' + PLUS : '';
+    };
+    $scope.noteSubjectCancellation = function() {
+        return ($scope.vSubjectCancellation) ? 'Cancellation' + PLUS : '';
+    };
+    $scope.noteSubjectAge = function() {
+        return ($scope.vSubjectAge) ? 'Age' + PLUS : '';
+    };
+    $scope.noteSubjectName = function() {
+        return ($scope.vSubjectName) ? 'Name' + PLUS : '';
+    };
+    $scope.noteSubjectAddress = function() {
+        return ($scope.vSubjectAddress) ? 'Address' + PLUS : '';
+    };
+    $scope.noteSubjectPhone = function() {
+        return ($scope.vSubjectPhone) ? 'Phone' + PLUS : '';
+    };
+    $scope.noteSubjectEmail = function() {
+        return ($scope.vSubjectEmail) ? 'Email' + PLUS : '';
+    };
+    $scope.noteSubjectComplaint = function() {
+        return ($scope.vSubjectComplaint) ? 'Complaint' + PLUS : '';
+    };
+    $scope.noteSubjectCallListening = function() {
+        return ($scope.vSubjectCallListening) ? 'Call Listening' + PLUS : '';
+    };
+    $scope.noteSubjectQaReport = function() {
+        return ($scope.vSubjectQaReport) ? 'QA Report' + PLUS : '';
+    };
+    $scope.noteSubjectDeceased = function() {
+        return ($scope.vSubjectDeceased) ? 'Deceased' + PLUS : '';
+    };
     
     $scope.sectSubjects = function() { 
         var subjects =
-        $scope.noteSubjectAutorenewal() + 
-        $scope.noteSubjectDate() + 
-        $scope.noteSubjectDestination() + 
-        $scope.noteSubjectMedical();
+            $scope.noteSubjectAutorenewal() + 
+            $scope.noteSubjectDocuments() + 
+            $scope.noteSubjectDiscount() + 
+            $scope.noteSubjectDate() + 
+            $scope.noteSubjectDestination() + 
+            $scope.noteSubjectMedical() + 
+            $scope.noteSubjectReferral() + 
+            $scope.noteSubjectAco() + 
+            $scope.noteSubjectDepartment() + 
+            $scope.noteSubjectPolicyWording() + 
+            $scope.noteSubjectTcs() + 
+            $scope.noteSubjectStToAmt() + 
+            $scope.noteSubjectCancellation() + 
+            $scope.noteSubjectAge() + 
+            $scope.noteSubjectName() + 
+            $scope.noteSubjectAddress() + 
+            $scope.noteSubjectPhone() + 
+            $scope.noteSubjectEmail() + 
+            $scope.noteSubjectComplaint() + 
+            $scope.noteSubjectCallList() +
+            $scope.noteSubjectQaReport() +
+            $scope.noteSubjectDeceased();
         //remove final PLUS
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : '';
     };

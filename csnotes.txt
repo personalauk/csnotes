@@ -6,3 +6,10 @@
 <span ng-show="vSubjectDates">Dates </span>
 <span ng-show="vSubjectDestination">Destination </span>
 <span ng-show="vSubjectMedical">Medical </span>
+
+
+MR called | 
+MR (Authorised by Organiser) called | Destination
+MR/MRS called | 
+DR (Authorised by Organiser) called | 
+MISS called | 
