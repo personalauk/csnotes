@@ -70,15 +70,20 @@ TODO:
 
     
 <p>action: 
-<!--<span ng-repeat="x in dActions" ng-model={{x.id}}><input type="checkbox" />{{x.lab}} </span>-->
-
+<span ng-repeat="x in dActions">
+    <label for="idAction{{x.id}}">
+        <input id=idAction{{x.id}} type="checkbox" ng-model="x.checked" />
+        {{x.lab}}
+    </label>
+</span>
+    
 <!--example from https://www.aspsnippets.com/Articles/AngularJS-CheckBoxList-example-Populate-list-of-multiple-CheckBoxes-using-ng-repeat-in-AngularJS.aspx -->
-<span ng-repeat="fruit in Fruits"> 
+<!--<span ng-repeat="fruit in Fruits"> 
     <label for="chkCustomer_{{fruit.FruitId}}">
         <input id="chkCustomer_{{fruit.FruitId}}" type="checkbox" ng-model="fruit.Selected" />
         {{fruit.Name}}
     </label>
-</span>    
+</span>  -->  
 </p>    
 
     
