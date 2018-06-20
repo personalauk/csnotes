@@ -70,10 +70,7 @@ TODO:
 
     
 <p>action: 
-<input type="checkbox" ng-model="vActionQuery" />Query
-<input type="checkbox" ng-model="vActionOptout" />AROO
-<input type="checkbox" ng-model="vActionUnwanted" />UNW AR
-    
+<span ng-repeat="x in dActions"><input type="checkbox" ng-model="Query" />{{x.lab}} </span>
 </p>    
 
     
@@ -93,6 +90,12 @@ var app = angular.module('csnApp', []);
     
 app.controller('csnController', function($scope) {
 
+    $scope.dActions = [
+        {id:'Query', lab:'Query'},
+        {id:'Optout', lab:'AROO'},
+        {id:'Unwanted', lab:'UNW AR'}
+    ];
+    
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : '';
     };
@@ -197,9 +200,29 @@ app.controller('csnController', function($scope) {
     };
 
     
+    $scope.noteActionQuery = function() {
+        return ($scope.Query) ? 'Query' + PLUS : '';
+    };
+    $scope.noteActionOptout = function() {
+        return ($scope.Optout) ? 'Optout' + PLUS : '';
+    };
+    $scope.noteActionUnwanted = function() {
+        return ($scope.Unwanted) ? 'Unwanted' + PLUS : '';
+    };
+    
+    $scope.sectActions = function() { 
+        var actions =
+            $scope.noteActionQuery() + 
+            $scope.noteActionOptout() + 
+            $scope.noteActionUnwanted();
+        //remove final PLUS
+        return (actions.length > 0) ? actions.substr(0, actions.length - PLUS.length) : '';
+    };
+
+    
     //TODO: conditional build
     $scope.notes = function() {
-        return $scope.sectCaller() + SEP + $scope.sectSubjects();
+        return $scope.sectCaller() + SEP + $scope.sectSubjects() + SEP + $scope.sectActions();
     };
     
 });
