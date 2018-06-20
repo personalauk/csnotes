@@ -70,7 +70,15 @@ TODO:
 
     
 <p>action: 
-<span ng-repeat="x in dActions" ng-model={{x.id}}><input type="checkbox" />{{x.lab}} </span>
+<!--<span ng-repeat="x in dActions" ng-model={{x.id}}><input type="checkbox" />{{x.lab}} </span>-->
+
+<!--example from https://www.aspsnippets.com/Articles/AngularJS-CheckBoxList-example-Populate-list-of-multiple-CheckBoxes-using-ng-repeat-in-AngularJS.aspx -->
+<span ng-repeat="fruit in Fruits"> 
+    <label for="chkCustomer_{{fruit.FruitId}}">
+        <input id="chkCustomer_{{fruit.FruitId}}" type="checkbox" ng-model="fruit.Selected" />
+        {{fruit.Name}}
+    </label>
+</span>    
 </p>    
 
     
@@ -95,7 +103,21 @@ app.controller('csnController', function($scope) {
         {id:'Optout', lab:'AROO'},
         {id:'Unwanted', lab:'UNW AR'}
     ];
-    
+
+    $scope.Fruits = [{
+        FruitId: 1,
+        Name: 'Apple',
+        Selected: false
+    }, {
+        FruitId: 2,
+        Name: 'Mango',
+        Selected: false
+    }, {
+        FruitId: 3,
+        Name: 'Orange',
+        Selected: false
+    }];
+     
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : '';
     };
