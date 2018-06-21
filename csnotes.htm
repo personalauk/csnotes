@@ -44,6 +44,7 @@ TODO:
 
     
 <p>subject: 
+<input type="checkbox" ng-model="vSubjectDepartment" />Dept
 <input type="checkbox" ng-model="vSubjectAutorenewal" />AR
 <input type="checkbox" ng-model="vSubjectDocuments" />Docs
 <input type="checkbox" ng-model="vSubjectDiscount" />Discount
@@ -52,9 +53,6 @@ TODO:
 <input type="checkbox" ng-model="vSubjectMedical" />Medical
 <input type="checkbox" ng-model="vSubjectReferral" />Referral
 <input type="checkbox" ng-model="vSubjectAco" />ACO
-<input type="checkbox" ng-model="vSubjectDepartment" />Dept
-<input type="checkbox" ng-model="vSubjectPolicyWording" />PW
-<input type="checkbox" ng-model="vSubjectTcs" />T&amp;Cs
 <input type="checkbox" ng-model="vSubjectStToAmt" />ST->AMT
 <input type="checkbox" ng-model="vSubjectCancellation" />Cancel
 <input type="checkbox" ng-model="vSubjectAge" />Age
@@ -62,6 +60,8 @@ TODO:
 <input type="checkbox" ng-model="vSubjectAddress" />Address
 <input type="checkbox" ng-model="vSubjectPhone" />Phone
 <input type="checkbox" ng-model="vSubjectEmail" />Email
+<input type="checkbox" ng-model="vSubjectPolicyWording" />PW
+<input type="checkbox" ng-model="vSubjectTcs" />T&amp;Cs
 <input type="checkbox" ng-model="vSubjectComplaint" />Complaint
 <input type="checkbox" ng-model="vSubjectCallListening" />Call List
 <input type="checkbox" ng-model="vSubjectQaReport" />QA
@@ -71,9 +71,9 @@ TODO:
     
 <p>action: 
 <span ng-repeat="x in dActions">
-    <label for="idAction{{x.id}}">
-        <input id=idAction{{x.id}} type="checkbox" ng-model="x.checked" />
-        {{x.lab}}
+    <label for="idAction_{{x.id}}">
+        <input id=idAction_{{x.id}} type="checkbox" ng-model="x.checked" />
+        {{x.label}}
     </label>
 </span>
     
@@ -104,9 +104,9 @@ var app = angular.module('csnApp', []);
 app.controller('csnController', function($scope) {
 
     $scope.dActions = [
-        {id:'Query', lab:'Query'},
-        {id:'Optout', lab:'AROO'},
-        {id:'Unwanted', lab:'UNW AR'}
+        {id:0, desc:'Query', label:'Query', checked:true},
+        {id:1, desc:'Opt out', label:'AROO', checked:false},
+        {id:2, desc:'Unwanted', label:'UNW AR', checked:false}
     ];
 
     $scope.Fruits = [{
@@ -131,6 +131,9 @@ app.controller('csnController', function($scope) {
     };
     
     
+    $scope.noteSubjectDepartment = function() {
+        return ($scope.vSubjectDepartment) ? 'Department' + PLUS : '';
+    };
     $scope.noteSubjectAutorenewal = function() {
         return ($scope.vSubjectAutorenewal) ? 'Autorenewal' + PLUS : '';
     };
@@ -155,15 +158,6 @@ app.controller('csnController', function($scope) {
     $scope.noteSubjectAco = function() {
         return ($scope.vSubjectAco) ? 'ACO' + PLUS : '';
     };
-    $scope.noteSubjectDepartment = function() {
-        return ($scope.vSubjectDepartment) ? 'Department' + PLUS : '';
-    };
-    $scope.noteSubjectPolicyWording = function() {
-        return ($scope.vSubjectPolicyWording) ? 'Policy Wording' + PLUS : '';
-    };
-    $scope.noteSubjectTcs = function() {
-        return ($scope.vSubjectTcs) ? 'T&Cs' + PLUS : '';
-    };
     $scope.noteSubjectStToAmt = function() {
         return ($scope.vSubjectStToAmt) ? 'ST->AMT' + PLUS : '';
     };
@@ -185,6 +179,12 @@ app.controller('csnController', function($scope) {
     $scope.noteSubjectEmail = function() {
         return ($scope.vSubjectEmail) ? 'Email' + PLUS : '';
     };
+    $scope.noteSubjectPolicyWording = function() {
+        return ($scope.vSubjectPolicyWording) ? 'Policy Wording' + PLUS : '';
+    };
+    $scope.noteSubjectTcs = function() {
+        return ($scope.vSubjectTcs) ? 'T&Cs' + PLUS : '';
+    };
     $scope.noteSubjectComplaint = function() {
         return ($scope.vSubjectComplaint) ? 'Complaint' + PLUS : '';
     };
@@ -200,6 +200,7 @@ app.controller('csnController', function($scope) {
     
     $scope.sectSubjects = function() { 
         var subjects =
+            $scope.noteSubjectDepartment() + 
             $scope.noteSubjectAutorenewal() + 
             $scope.noteSubjectDocuments() + 
             $scope.noteSubjectDiscount() + 
@@ -208,9 +209,6 @@ app.controller('csnController', function($scope) {
             $scope.noteSubjectMedical() + 
             $scope.noteSubjectReferral() + 
             $scope.noteSubjectAco() + 
-            $scope.noteSubjectDepartment() + 
-            $scope.noteSubjectPolicyWording() + 
-            $scope.noteSubjectTcs() + 
             $scope.noteSubjectStToAmt() + 
             $scope.noteSubjectCancellation() + 
             $scope.noteSubjectAge() + 
@@ -218,6 +216,8 @@ app.controller('csnController', function($scope) {
             $scope.noteSubjectAddress() + 
             $scope.noteSubjectPhone() + 
             $scope.noteSubjectEmail() + 
+            $scope.noteSubjectPolicyWording() + 
+            $scope.noteSubjectTcs() + 
             $scope.noteSubjectComplaint() + 
             $scope.noteSubjectCallListening() +
             $scope.noteSubjectQaReport() +
@@ -228,13 +228,13 @@ app.controller('csnController', function($scope) {
 
     
     $scope.noteActionQuery = function() {
-        return ($scope.Query) ? 'Query' + PLUS : '';
+        return ($scope.dActions[0].checked) ? 'Query' + PLUS : '';
     };
     $scope.noteActionOptout = function() {
-        return ($scope.Optout) ? 'Optout' + PLUS : '';
+        return ($scope.dActions[1].checked) ? 'Opt out' + PLUS : '';
     };
     $scope.noteActionUnwanted = function() {
-        return ($scope.Unwanted) ? 'Unwanted' + PLUS : '';
+        return ($scope.dActions[2].checked) ? 'Unwanted' + PLUS : '';
     };
     
     $scope.sectActions = function() { 
