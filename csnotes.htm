@@ -227,6 +227,13 @@ app.controller('csnController', function($scope) {
     };
 
     //later an array? ($scope.noteAction[0] =...)
+    for (z=0; z<2; z++) {
+        $scope.noteAction[z] = function() {
+            return ($scope.dActions[z].checked) ? $scope.dActions[z].desc + PLUS : '';
+        };
+    }
+
+/*
     $scope.noteActionQuery = function() {
         return ($scope.dActions[0].checked) ? $scope.dActions[0].desc + PLUS : '';
     };
@@ -236,13 +243,20 @@ app.controller('csnController', function($scope) {
     $scope.noteActionUnwanted = function() {
         return ($scope.dActions[2].checked) ? $scope.dActions[2].desc + PLUS : '';
     };
+*/
     
     
     $scope.sectActions = function() { 
-        var actions =
+/*
+        var actions = 
             $scope.noteActionQuery() + 
             $scope.noteActionOptout() + 
             $scope.noteActionUnwanted();
+*/
+        var actions = '';
+        for (z2=0; z2<2; z2++) {
+            actions += $scope.noteAction[z2]();
+        }
         //remove final PLUS
         return (actions.length > 0) ? actions.substr(0, actions.length - PLUS.length) : '';
     };
