@@ -71,9 +71,9 @@ TODO:
     
 <p>action: 
 <span ng-repeat="x in dActions">
-    <label for="idAction_{{x.id}}">
-        <input id=idAction_{{x.id}} type="checkbox" ng-model="x.checked" />
-        {{x.label}}
+    <label for="idAction{{ x.id }}">
+        <input id=idAction{{ x.id }} type="checkbox" ng-model="x.checked" />
+        {{ x.label }}
     </label>
 </span>
     
@@ -104,9 +104,9 @@ var app = angular.module('csnApp', []);
 app.controller('csnController', function($scope) {
 
     $scope.dActions = [
-        {id:0, desc:'Query', label:'Query', checked:true},
-        {id:1, desc:'Opt out', label:'AROO', checked:false},
-        {id:2, desc:'Unwanted', label:'UNW AR', checked:false}
+        {id:0, desc:'Query', label:'Query'},
+        {id:1, desc:'Opt out', label:'AROO'},
+        {id:2, desc:'Unwanted', label:'UNW AR'}
     ];
 
     $scope.Fruits = [{
@@ -226,16 +226,17 @@ app.controller('csnController', function($scope) {
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : '';
     };
 
-    
+    //later an array? ($scope.noteAction[0] =...)
     $scope.noteActionQuery = function() {
-        return ($scope.dActions[0].checked) ? 'Query' + PLUS : '';
+        return ($scope.dActions[0].checked) ? $scope.dActions[0].desc + PLUS : '';
     };
     $scope.noteActionOptout = function() {
-        return ($scope.dActions[1].checked) ? 'Opt out' + PLUS : '';
+        return ($scope.dActions[1].checked) ? $scope.dActions[1].desc + PLUS : '';
     };
     $scope.noteActionUnwanted = function() {
-        return ($scope.dActions[2].checked) ? 'Unwanted' + PLUS : '';
+        return ($scope.dActions[2].checked) ? $scope.dActions[2].desc + PLUS : '';
     };
+    
     
     $scope.sectActions = function() { 
         var actions =
