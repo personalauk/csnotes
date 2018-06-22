@@ -71,21 +71,11 @@ TODO:
     
 <p>action: 
 <span ng-repeat="x in dActions">
-    <label for="idAction{{ x.id }}">
-        <input id=idAction{{ x.id }} type="checkbox" ng-model="x.checked" />
-        {{ x.label }}
+    <label>
+        <input type="checkbox" ng-model="x.checked" />{{ x.lab }} 
     </label>
 </span>
-    
-<!--example from https://www.aspsnippets.com/Articles/AngularJS-CheckBoxList-example-Populate-list-of-multiple-CheckBoxes-using-ng-repeat-in-AngularJS.aspx -->
-<!--<span ng-repeat="fruit in Fruits"> 
-    <label for="chkCustomer_{{fruit.FruitId}}">
-        <input id="chkCustomer_{{fruit.FruitId}}" type="checkbox" ng-model="fruit.Selected" />
-        {{fruit.Name}}
-    </label>
-</span>  -->  
-</p>    
-
+</p>
     
     
 
@@ -104,25 +94,12 @@ var app = angular.module('csnApp', []);
 app.controller('csnController', function($scope) {
 
     $scope.dActions = [
-        {id:0, desc:'Query', label:'Query'},
-        {id:1, desc:'Opt out', label:'AROO'},
-        {id:2, desc:'Unwanted', label:'UNW AR'}
+        {id:0,   desc:'Query',      lab:'Query'},
+        {id:1,   desc:'Opt out',    lab:'AROO'},
+        {id:2,   desc:'Unwanted',   lab:'UNW AR'},
+        {id:3,   desc:'four',       lab:'444'}
     ];
 
-    $scope.Fruits = [{
-        FruitId: 1,
-        Name: 'Apple',
-        Selected: false
-    }, {
-        FruitId: 2,
-        Name: 'Mango',
-        Selected: false
-    }, {
-        FruitId: 3,
-        Name: 'Orange',
-        Selected: false
-    }];
-     
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : '';
     };
@@ -131,7 +108,7 @@ app.controller('csnController', function($scope) {
     };
     
     
-    $scope.noteSubjectDepartment = function() {
+    $scope.noteSubjectDepartment = function() { 
         return ($scope.vSubjectDepartment) ? 'Department' + PLUS : '';
     };
     $scope.noteSubjectAutorenewal = function() {
@@ -226,37 +203,19 @@ app.controller('csnController', function($scope) {
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : '';
     };
 
-    //later an array? ($scope.noteAction[0] =...)
-    for (z=0; z<2; z++) {
-        $scope.noteAction[z] = function() {
-            return ($scope.dActions[z].checked) ? $scope.dActions[z].desc + PLUS : '';
-        };
-    }
-
-/*
-    $scope.noteActionQuery = function() {
-        return ($scope.dActions[0].checked) ? $scope.dActions[0].desc + PLUS : '';
-    };
-    $scope.noteActionOptout = function() {
-        return ($scope.dActions[1].checked) ? $scope.dActions[1].desc + PLUS : '';
-    };
-    $scope.noteActionUnwanted = function() {
-        return ($scope.dActions[2].checked) ? $scope.dActions[2].desc + PLUS : '';
-    };
-*/
-    
     
     $scope.sectActions = function() { 
-/*
-        var actions = 
-            $scope.noteActionQuery() + 
-            $scope.noteActionOptout() + 
-            $scope.noteActionUnwanted();
-*/
         var actions = '';
-        for (z2=0; z2<2; z2++) {
-            actions += $scope.noteAction[z2]();
+        actions += ($scope.dActions[0].checked) ? $scope.dActions[0].desc + PLUS : '';
+        actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + PLUS : '';
+        actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + PLUS : '';
+        actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + PLUS : '';
+/*
+        var actions = '';
+        for (z=0; z<dActions.length; z++){
+            actions += ($scope.dActions[z].checked) ? $scope.dActions[z].desc + PLUS : '';
         }
+*/
         //remove final PLUS
         return (actions.length > 0) ? actions.substr(0, actions.length - PLUS.length) : '';
     };
