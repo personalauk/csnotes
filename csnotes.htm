@@ -87,9 +87,12 @@ function copyNotes() {
     notesBox.blur();  //removes selection
 }
 
-var EMPTY = '';  //empty string
-var PLUS = ' + ';  //builds lists of subjects
-var SEP = ' | ';  //separates sections
+var EMPTY = '';     //empty string
+var PLUS =  ' + ';  //builds lists of subjects
+var DOT =   '. ';   //builds lists of phrases
+var LIST =  ', ';   //builds lists
+var SEP =   ' | ';  //separates sections
+    
 var app = angular.module('csnApp', []);
     
 app.controller('csnController', function($scope) {
@@ -207,10 +210,10 @@ app.controller('csnController', function($scope) {
     
     $scope.sectActions = function() { 
         var actions = EMPTY;
-        actions += ($scope.dActions[0].checked) ? $scope.dActions[0].desc + PLUS : EMPTY;  //must be explicit lines:
-        actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + PLUS : EMPTY;  //doesn't work with angularjs in a for loop
-        actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + PLUS : EMPTY;
-        actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + PLUS : EMPTY;
+        actions += ($scope.dActions[0].checked) ? $scope.dActions[0].desc + DOT : EMPTY;  //must be explicit lines:
+        actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + DOT : EMPTY;  //doesn't work with angularjs in a for loop
+        actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + DOT : EMPTY;
+        actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + DOT : EMPTY;
         //remove final PLUS
         return (actions.length > 0) ? actions.substr(0, actions.length - PLUS.length) : EMPTY;
     };
@@ -218,6 +221,7 @@ app.controller('csnController', function($scope) {
     
     //TODO: conditional build
     $scope.notes = function() {
+        all = EMPTY;
         return $scope.sectCaller() + SEP + $scope.sectSubjects() + SEP + $scope.sectActions();
     };
     
