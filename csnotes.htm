@@ -214,15 +214,18 @@ app.controller('csnController', function($scope) {
         actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + DOT : EMPTY;  //doesn't work with angularjs in a for loop
         actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + DOT : EMPTY;
         actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + DOT : EMPTY;
-        //remove final PLUS
-        return (actions.length > 0) ? actions.substr(0, actions.length - PLUS.length) : EMPTY;
+        //remove final DOT
+        return (actions.length > 0) ? actions.substr(0, actions.length - DOT.length) : EMPTY;
     };
 
     
-    //TODO: conditional build
     $scope.notes = function() {
-        all = EMPTY;
-        return $scope.sectCaller() + SEP + $scope.sectSubjects() + SEP + $scope.sectActions();
+        var all = EMPTY;
+        all += ($scope.sectCaller().length > 0) ? $scope.sectCaller() + SEP : EMPTY;
+        all += ($scope.sectSubjects().length > 0) ? $scope.sectSubjects() + SEP : EMPTY;
+        all += ($scope.sectActions().length > 0) ? $scope.sectActions() + SEP : EMPTY;
+        //remove final SEP
+        return (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;
     };
     
 });
