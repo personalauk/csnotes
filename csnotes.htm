@@ -94,10 +94,10 @@ var app = angular.module('csnApp', []);
 app.controller('csnController', function($scope) {
 
     $scope.dActions = [
-        {desc:'Query',      lab:'Query'},
-        {desc:'Opt out',    lab:'AROO'},
-        {desc:'Unwanted AR',   lab:'UNW AR'},
-        {desc:'four',       lab:'444'}
+        {desc:'Query',          lab:'Query'},
+        {desc:'Opt out',        lab:'AROO'},
+        {desc:'Unwanted AR',    lab:'UNW AR'},
+        {desc:'four',           lab:'444'}
     ];
 
     $scope.noteAuthorised = function() {
@@ -206,8 +206,8 @@ app.controller('csnController', function($scope) {
     
     $scope.sectActions = function() { 
         var actions = '';
-        actions += ($scope.dActions[0].checked) ? $scope.dActions[0].desc + PLUS : '';
-        actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + PLUS : '';
+        actions += ($scope.dActions[0].checked) ? $scope.dActions[0].desc + PLUS : '';  //must be explicit lines:
+        actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + PLUS : '';  //doesn't work with angularjs in a for loop
         actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + PLUS : '';
         actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + PLUS : '';
         //remove final PLUS
