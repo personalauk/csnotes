@@ -25,7 +25,8 @@ TODO:
     
 <button onclick="copyNotes()">Copy</button>
 <input id="idNotesBox" type="text" value="{{ notes() }}" style="width: 90%" />
-
+<button ng-click="resetNotes()">Reset</button>
+    
 
 <p>caller: 
 <!--    TODO: transferred + outbound + info-->
@@ -103,6 +104,10 @@ app.controller('csnController', function($scope) {
         {desc:'Unwanted AR',    lab:'UNW AR'},
         {desc:'four',           lab:'444'}
     ];
+
+    $scope.resetNotes = function() {
+        $scope.vCaller = 'DR';
+    };
 
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
@@ -227,6 +232,8 @@ app.controller('csnController', function($scope) {
         //remove final SEP
         return (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;
     };
+    
+    
     
 });
 </script> 
