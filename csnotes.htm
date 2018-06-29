@@ -84,7 +84,7 @@ function copyNotes() {
     notesBox.select();
     document.execCommand("copy");
     notesBox.blur();  //removes selection
-};
+}
 
 var EMPTY = '';     //empty string
 var PLUS =  ' + ';  //builds lists of subjects
@@ -111,82 +111,82 @@ app.controller('csnController', function($scope) {
         $scope.dActions[1].checked = false;
         $scope.dActions[2].checked = false;
         $scope.dActions[3].checked = false;
-    };
+    }
 
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
-    };
+    }
     $scope.sectCaller = function() {
         return $scope.vCaller + $scope.noteAuthorised() + ' called';
-    };
+    }
     
     
     $scope.noteSubjectDepartment = function() { 
         return ($scope.vSubjectDepartment) ? 'Department' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectAutorenewal = function() {
         return ($scope.vSubjectAutorenewal) ? 'Autorenewal' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectDocuments = function() {
         return ($scope.vSubjectDocuments) ? 'Documents' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectDiscount = function() {
         return ($scope.vSubjectDiscount) ? 'Discount' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectDate = function() {
         return ($scope.vSubjectDate) ? 'Dates' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectDestination = function() {
         return ($scope.vSubjectDestination) ? 'Destination' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectMedical = function() {
         return ($scope.vSubjectMedical) ? 'Medical' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectReferral = function() {
         return ($scope.vSubjectReferral) ? 'Referral' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectAco = function() {
         return ($scope.vSubjectAco) ? 'ACO' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectStToAmt = function() {
         return ($scope.vSubjectStToAmt) ? 'ST->AMT' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectCancellation = function() {
         return ($scope.vSubjectCancellation) ? 'Cancellation' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectAge = function() {
         return ($scope.vSubjectAge) ? 'Age' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectName = function() {
         return ($scope.vSubjectName) ? 'Name' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectAddress = function() {
         return ($scope.vSubjectAddress) ? 'Address' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectPhone = function() {
         return ($scope.vSubjectPhone) ? 'Phone' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectEmail = function() {
         return ($scope.vSubjectEmail) ? 'Email' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectPolicyWording = function() {
         return ($scope.vSubjectPolicyWording) ? 'Policy Wording' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectTcs = function() {
         return ($scope.vSubjectTcs) ? 'T&Cs' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectComplaint = function() {
         return ($scope.vSubjectComplaint) ? 'Complaint' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectCallListening = function() {
         return ($scope.vSubjectCallListening) ? 'Call Listening' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectQaReport = function() {
         return ($scope.vSubjectQaReport) ? 'QA Report' + PLUS : EMPTY;
-    };
+    }
     $scope.noteSubjectDeceased = function() {
         return ($scope.vSubjectDeceased) ? 'Deceased' + PLUS : EMPTY;
-    };
+    }
     
     $scope.sectSubjects = function() { 
         var subjects =
@@ -214,7 +214,7 @@ app.controller('csnController', function($scope) {
             $scope.noteSubjectDeceased();
         //remove final PLUS
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : EMPTY;
-    };
+    }
 
     
     $scope.sectActions = function() { 
@@ -225,7 +225,7 @@ app.controller('csnController', function($scope) {
         actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + DOT : EMPTY;
         //remove final DOT
         return (actions.length > 0) ? actions.substr(0, actions.length - DOT.length) : EMPTY;
-    };
+    }
 
     
     $scope.notes = function() {
@@ -235,7 +235,7 @@ app.controller('csnController', function($scope) {
         all += ($scope.sectActions().length > 0) ? $scope.sectActions() + SEP : EMPTY;
         //remove final SEP
         return (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;
-    };
+    }
     
 });
 </script> 
