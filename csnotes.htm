@@ -19,12 +19,11 @@ TODO:
     
     
 </head>
-<body ng-app="csnApp" ng-controller="csnController"
-      ng-init="vCaller='MR';vAuthorised=false"
->
+<body ng-app="csnApp" ng-controller="csnController">
     
 <button onclick="copyNotes()">Copy</button>
 <input id="idNotesBox" type="text" value="{{ notes() }}" style="width: 90%" />
+<button ng-click="resetNotes()">Reset</button>
 
 
 <p>caller: 
@@ -85,7 +84,7 @@ function copyNotes() {
     notesBox.select();
     document.execCommand("copy");
     notesBox.blur();  //removes selection
-}
+};
 
 var EMPTY = '';     //empty string
 var PLUS =  ' + ';  //builds lists of subjects
@@ -98,11 +97,21 @@ var app = angular.module('csnApp', []);
 app.controller('csnController', function($scope) {
 
     $scope.dActions = [
-        {desc:'Query',          lab:'Query'},
-        {desc:'Opt out',        lab:'AROO'},
-        {desc:'Unwanted AR',    lab:'UNW AR'},
-        {desc:'four',           lab:'444'}
+        {checked:false,   lab:'Query',   desc:'Query'},
+        {checked:false,   lab:'AROO',    desc:'Opt out'},
+        {checked:true,   lab:'UNW AR',  desc:'Unwanted AR'},
+        {checked:false,   lab:'444',     desc:'four'}
     ];
+    $scope.resetNotes = function() {
+        /*var ra;
+        for (ra in $scope.dActions) {
+            $scope.dActions[ra].checked = false;
+        }*/
+        $scope.dActions[0].checked = false;
+        $scope.dActions[1].checked = false;
+        $scope.dActions[2].checked = false;
+        $scope.dActions[3].checked = false;
+    };
 
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
