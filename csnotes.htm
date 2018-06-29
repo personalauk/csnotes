@@ -100,17 +100,20 @@ app.controller('csnController', function($scope) {
         {checked:false,   lab:'Query',   desc:'Query'},
         {checked:false,   lab:'AROO',    desc:'Opt out'},
         {checked:true,   lab:'UNW AR',  desc:'Unwanted AR'},
-        {checked:false,   lab:'444',     desc:'four'}
+        {checked:false,   lab:'444',     desc:'four'},
+        {checked:false,   lab:'five',     desc:'five'}
     ];
     $scope.resetNotes = function() {
-        /*var ra;
+        var ra;
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
-        }*/
+        }
+/*
         $scope.dActions[0].checked = false;
         $scope.dActions[1].checked = false;
         $scope.dActions[2].checked = false;
         $scope.dActions[3].checked = false;
+*/
     }
 
     $scope.noteAuthorised = function() {
@@ -223,8 +226,7 @@ app.controller('csnController', function($scope) {
         actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + DOT : EMPTY;  //doesn't work with angularjs in a for loop
         actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + DOT : EMPTY;
         actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + DOT : EMPTY;
-        //remove final DOT
-        return (actions.length > 0) ? actions.substr(0, actions.length - DOT.length) : EMPTY;
+        actions += ($scope.dActions[4].checked) ? $scope.dActions[4].desc + DOT : EMPTY;
     }
 
     
