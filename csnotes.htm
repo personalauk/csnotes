@@ -97,30 +97,26 @@ var app = angular.module('csnApp', []);
 app.controller('csnController', function($scope) {
 
     $scope.dActions = [
-        {checked:false,   lab:'Query',   desc:'Query'},
-        {checked:false,   lab:'AROO',    desc:'Opt out'},
-        {checked:true,   lab:'UNW AR',  desc:'Unwanted AR'},
-        {checked:false,   lab:'444',     desc:'four'},
-        {checked:false,   lab:'five',     desc:'five'}
+        {lab:'Query',   desc:'Query'},
+        {lab:'AROO',    desc:'Opt out'},
+        {lab:'UNW AR',  desc:'Unwanted AR'},
+        {lab:'444',     desc:'four'},
+        {lab:'five',    desc:'five'}
     ];
     $scope.resetNotes = function() {
+        $scope.vCaller = '';
+        $scope.vAuthorised = false;
         var ra;
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
         }
-/*
-        $scope.dActions[0].checked = false;
-        $scope.dActions[1].checked = false;
-        $scope.dActions[2].checked = false;
-        $scope.dActions[3].checked = false;
-*/
     }
 
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
     }
     $scope.sectCaller = function() {
-        return $scope.vCaller + $scope.noteAuthorised() + ' called';
+        return ($scope.vCaller) ? $scope.vCaller + $scope.noteAuthorised() + ' called' : EMPTY;
     }
     
     
@@ -240,6 +236,8 @@ app.controller('csnController', function($scope) {
         return (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;
     }
     
+    //initially display the reset settings
+    $scope.resetNotes();
 });
 </script> 
     
