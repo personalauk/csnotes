@@ -28,14 +28,12 @@ TODO:
 
 <p>caller: 
 <!--    TODO: transferred + outbound + info-->
-<input type="radio" ng-model="vCaller" value="MR" />MR
-<input type="radio" ng-model="vCaller" value="MRS" />MRS
-<input type="radio" ng-model="vCaller" value="MR/MRS" />MR/MRS
-<input type="radio" ng-model="vCaller" value="MS" />MS
-<input type="radio" ng-model="vCaller" value="MISS" />MISS
-<input type="radio" ng-model="vCaller" value="DR" />DR
-<input type="radio" ng-model="vCaller" value="Organiser" />Org
-<input type="radio" ng-model="vCaller" value="Caller" />Caller
+<span ng-repeat="xc in dCallers">
+    <label>
+        <input type="radio" ng-model="vCaller" value="xc.val" />{{ xc.lab }} 
+<!--        <input type="radio" ng-model="vCaller" value="{{ xc.val }}" />{{ xc.lab }} -->
+    </label>
+</span>
 <!--TODO: named-->
 <input type="checkbox" ng-model="vAuthorised" />Auth
 <!--TODO: can't dpa + no answer-->
@@ -80,6 +78,18 @@ var app = angular.module('csnApp', []);
     
 app.controller('csnController', function($scope) {
 
+    $scope.dCallers = [
+        {lab:'MR',          val:'MR'},
+        {lab:'MRS',         val:'MRS'},
+        {lab:'MR/MRS',      val:'MR/MRS'},
+        {lab:'MS',          val:'MS'},
+        {lab:'MISS',        val:'MISS'},
+        {lab:'DR',          val:'DR'},
+        {lab:'Org',         val:'Organiser'},
+        {lab:'Caller',      val:'Caller'},
+        {lab:'No Ans',      val:'No Answer'}
+    ];
+
     $scope.dSubjects = [
         {lab:'Dept',        desc:'Department'},
         {lab:'AR',          desc:'Autorenewal'},
@@ -108,11 +118,11 @@ app.controller('csnController', function($scope) {
     ];
 
     $scope.dActions = [
-        {lab:'Query',   desc:'Query'},
-        {lab:'AROO',    desc:'AR Opt out'},
-        {lab:'Unw AR',  desc:'Unwanted AR'},
-        {lab:'444',     desc:'four'},
-        {lab:'five',    desc:'five'}
+        {lab:'Query',       desc:'Query'},
+        {lab:'AROO',        desc:'AR Opt out'},
+        {lab:'Unw AR',      desc:'Unwanted AR'},
+        {lab:'444',         desc:'four'},
+        {lab:'five',        desc:'five'}
     ];
     
     
