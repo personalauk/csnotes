@@ -43,35 +43,18 @@ TODO:
 
     
 <p>subject: 
-<input type="checkbox" ng-model="vSubjectDepartment" />Dept
-<input type="checkbox" ng-model="vSubjectAutorenewal" />AR
-<input type="checkbox" ng-model="vSubjectDocuments" />Docs
-<input type="checkbox" ng-model="vSubjectDiscount" />Discount
-<input type="checkbox" ng-model="vSubjectDate" />Dates
-<input type="checkbox" ng-model="vSubjectDestination" />Dest
-<input type="checkbox" ng-model="vSubjectMedical" />Medical
-<input type="checkbox" ng-model="vSubjectReferral" />Referral
-<input type="checkbox" ng-model="vSubjectAco" />ACO
-<input type="checkbox" ng-model="vSubjectStToAmt" />ST->AMT
-<input type="checkbox" ng-model="vSubjectCancellation" />Cancel
-<input type="checkbox" ng-model="vSubjectAge" />Age
-<input type="checkbox" ng-model="vSubjectName" />Name
-<input type="checkbox" ng-model="vSubjectAddress" />Address
-<input type="checkbox" ng-model="vSubjectPhone" />Phone
-<input type="checkbox" ng-model="vSubjectEmail" />Email
-<input type="checkbox" ng-model="vSubjectPolicyWording" />PW
-<input type="checkbox" ng-model="vSubjectTcs" />T&amp;Cs
-<input type="checkbox" ng-model="vSubjectComplaint" />Complaint
-<input type="checkbox" ng-model="vSubjectCallListening" />Call List
-<input type="checkbox" ng-model="vSubjectQaReport" />QA
-<input type="checkbox" ng-model="vSubjectDeceased" />Deceased
+<span ng-repeat="xs in dSubjects">
+    <label>
+        <input type="checkbox" ng-model="xs.checked" />{{ xs.lab }} 
+    </label>
+</span>
 </p>
 
     
 <p>action: 
-<span ng-repeat="x in dActions">
+<span ng-repeat="xa in dActions">
     <label>
-        <input type="checkbox" ng-model="x.checked" />{{ x.lab }} 
+        <input type="checkbox" ng-model="xa.checked" />{{ xa.lab }} 
     </label>
 </span>
 </p>
@@ -96,22 +79,54 @@ var app = angular.module('csnApp', []);
     
 app.controller('csnController', function($scope) {
 
+    $scope.dSubjects = [
+        {lab:'Dept',        desc:'Department'},
+        {lab:'AR',          desc:'Autorenewal'},
+        {lab:'Docs',        desc:'Documents'},
+        {lab:'Disc',        desc:'Discount'},
+        {lab:'Date',        desc:'Date'},
+        {lab:'Dest',        desc:'Destination'},
+        {lab:'Medical',     desc:'Medical'},
+        {lab:'Refer',       desc:'Referral'},
+        {lab:'ACO',         desc:'ACO'},
+        {lab:'ST->AMT',     desc:'ST->AMT'},
+        {lab:'Cancel',      desc:'Cancellation'},
+        {lab:'Age',         desc:'Age'},
+        {lab:'Name',        desc:'Name'},
+        {lab:'Addr',        desc:'Address'},
+        {lab:'Phone',       desc:'Phone'},
+        {lab:'Email',       desc:'Email'},
+        {lab:'PW',          desc:'Policy Wording'},
+        {lab:'T&Cs',        desc:'T&Cs'},
+        {lab:'Complaint',   desc:'Complaint'},
+        {lab:'Call List',   desc:'Call Listening'},
+        {lab:'QA',          desc:'QA Report'},
+        {lab:'Deceased',    desc:'Deceased'}
+    ];
+
     $scope.dActions = [
         {lab:'Query',   desc:'Query'},
-        {lab:'AROO',    desc:'Opt out'},
-        {lab:'UNW AR',  desc:'Unwanted AR'},
+        {lab:'AROO',    desc:'AR Opt out'},
+        {lab:'Unw AR',  desc:'Unwanted AR'},
         {lab:'444',     desc:'four'},
         {lab:'five',    desc:'five'}
     ];
+    
+    
     $scope.resetNotes = function() {
-        $scope.vCaller = '';
+        $scope.vCaller = EMPTY;
         $scope.vAuthorised = false;
+        var sa;
+        for (sa in $scope.dSubjects) {
+            $scope.dSubjects[sa].checked = false;
+        }
         var ra;
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
         }
     }
 
+    
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
     }
@@ -119,98 +134,31 @@ app.controller('csnController', function($scope) {
         return ($scope.vCaller) ? $scope.vCaller + $scope.noteAuthorised() + ' called' : EMPTY;
     }
     
-    
-    $scope.noteSubjectDepartment = function() { 
-        return ($scope.vSubjectDepartment) ? 'Department' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectAutorenewal = function() {
-        return ($scope.vSubjectAutorenewal) ? 'Autorenewal' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectDocuments = function() {
-        return ($scope.vSubjectDocuments) ? 'Documents' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectDiscount = function() {
-        return ($scope.vSubjectDiscount) ? 'Discount' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectDate = function() {
-        return ($scope.vSubjectDate) ? 'Dates' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectDestination = function() {
-        return ($scope.vSubjectDestination) ? 'Destination' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectMedical = function() {
-        return ($scope.vSubjectMedical) ? 'Medical' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectReferral = function() {
-        return ($scope.vSubjectReferral) ? 'Referral' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectAco = function() {
-        return ($scope.vSubjectAco) ? 'ACO' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectStToAmt = function() {
-        return ($scope.vSubjectStToAmt) ? 'ST->AMT' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectCancellation = function() {
-        return ($scope.vSubjectCancellation) ? 'Cancellation' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectAge = function() {
-        return ($scope.vSubjectAge) ? 'Age' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectName = function() {
-        return ($scope.vSubjectName) ? 'Name' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectAddress = function() {
-        return ($scope.vSubjectAddress) ? 'Address' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectPhone = function() {
-        return ($scope.vSubjectPhone) ? 'Phone' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectEmail = function() {
-        return ($scope.vSubjectEmail) ? 'Email' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectPolicyWording = function() {
-        return ($scope.vSubjectPolicyWording) ? 'Policy Wording' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectTcs = function() {
-        return ($scope.vSubjectTcs) ? 'T&Cs' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectComplaint = function() {
-        return ($scope.vSubjectComplaint) ? 'Complaint' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectCallListening = function() {
-        return ($scope.vSubjectCallListening) ? 'Call Listening' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectQaReport = function() {
-        return ($scope.vSubjectQaReport) ? 'QA Report' + PLUS : EMPTY;
-    }
-    $scope.noteSubjectDeceased = function() {
-        return ($scope.vSubjectDeceased) ? 'Deceased' + PLUS : EMPTY;
-    }
-    
+        
     $scope.sectSubjects = function() { 
-        var subjects =
-            $scope.noteSubjectDepartment() + 
-            $scope.noteSubjectAutorenewal() + 
-            $scope.noteSubjectDocuments() + 
-            $scope.noteSubjectDiscount() + 
-            $scope.noteSubjectDate() + 
-            $scope.noteSubjectDestination() + 
-            $scope.noteSubjectMedical() + 
-            $scope.noteSubjectReferral() + 
-            $scope.noteSubjectAco() + 
-            $scope.noteSubjectStToAmt() + 
-            $scope.noteSubjectCancellation() + 
-            $scope.noteSubjectAge() + 
-            $scope.noteSubjectName() + 
-            $scope.noteSubjectAddress() + 
-            $scope.noteSubjectPhone() + 
-            $scope.noteSubjectEmail() + 
-            $scope.noteSubjectPolicyWording() + 
-            $scope.noteSubjectTcs() + 
-            $scope.noteSubjectComplaint() + 
-            $scope.noteSubjectCallListening() +
-            $scope.noteSubjectQaReport() +
-            $scope.noteSubjectDeceased();
+        var subjects = EMPTY;
+        subjects += ($scope.dSubjects[0].checked) ? $scope.dSubjects[0].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[1].checked) ? $scope.dSubjects[1].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[2].checked) ? $scope.dSubjects[2].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[3].checked) ? $scope.dSubjects[3].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[4].checked) ? $scope.dSubjects[4].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[5].checked) ? $scope.dSubjects[5].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[6].checked) ? $scope.dSubjects[6].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[7].checked) ? $scope.dSubjects[7].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[8].checked) ? $scope.dSubjects[8].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[9].checked) ? $scope.dSubjects[9].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[10].checked) ? $scope.dSubjects[10].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[11].checked) ? $scope.dSubjects[11].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[12].checked) ? $scope.dSubjects[12].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[13].checked) ? $scope.dSubjects[13].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[14].checked) ? $scope.dSubjects[14].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[15].checked) ? $scope.dSubjects[15].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[16].checked) ? $scope.dSubjects[16].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[17].checked) ? $scope.dSubjects[17].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[18].checked) ? $scope.dSubjects[18].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[19].checked) ? $scope.dSubjects[19].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[20].checked) ? $scope.dSubjects[20].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[21].checked) ? $scope.dSubjects[21].desc + PLUS : EMPTY;
         //remove final PLUS
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : EMPTY;
     }
@@ -235,8 +183,9 @@ app.controller('csnController', function($scope) {
         //remove final SEP
         return (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;
     }
+
     
-    //initially display the reset settings
+    //startup with the reset settings
     $scope.resetNotes();
 });
 </script> 
