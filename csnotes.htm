@@ -22,7 +22,7 @@ TODO:
 <body ng-app="csnApp" ng-controller="csnController">
     
 <button onclick="copyNotes()">Copy</button>
-<input id="idNotesBox" type="text" value="{{ notes() }}" style="width: 90%" />
+<input id="idNotesBox" type="text" readonly value="{{ notes() }}" style="width: 90%" />
 <button ng-click="resetNotes()">Reset</button>
 
 
@@ -48,6 +48,7 @@ TODO:
         <input type="checkbox" ng-model="xs.checked" />{{ xs.lab }} 
     </label>
 </span>
+<input type="text" ng-show="dSubjects[23].checked" ng-model="vSubjectOther" />
 </p>
 
     
@@ -84,6 +85,7 @@ app.controller('csnController', function($scope) {
         {lab:'AR',          desc:'Autorenewal'},
         {lab:'Docs',        desc:'Documents'},
         {lab:'Disc',        desc:'Discount'},
+        {lab:'PM',          desc:'Price Match'},
         {lab:'Date',        desc:'Date'},
         {lab:'Dest',        desc:'Destination'},
         {lab:'Medical',     desc:'Medical'},
@@ -101,7 +103,8 @@ app.controller('csnController', function($scope) {
         {lab:'Complaint',   desc:'Complaint'},
         {lab:'Call List',   desc:'Call Listening'},
         {lab:'QA',          desc:'QA Report'},
-        {lab:'Deceased',    desc:'Deceased'}
+        {lab:'Deceased',    desc:'Deceased'},
+        {lab:'Other',       desc:EMPTY}
     ];
 
     $scope.dActions = [
@@ -120,6 +123,7 @@ app.controller('csnController', function($scope) {
         for (sa in $scope.dSubjects) {
             $scope.dSubjects[sa].checked = false;
         }
+        $scope.vSubjectOther = EMPTY;
         var ra;
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
@@ -159,6 +163,8 @@ app.controller('csnController', function($scope) {
         subjects += ($scope.dSubjects[19].checked) ? $scope.dSubjects[19].desc + PLUS : EMPTY;
         subjects += ($scope.dSubjects[20].checked) ? $scope.dSubjects[20].desc + PLUS : EMPTY;
         subjects += ($scope.dSubjects[21].checked) ? $scope.dSubjects[21].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[22].checked) ? $scope.dSubjects[22].desc + PLUS : EMPTY;
+        subjects += ($scope.dSubjects[23].checked) ? $scope.vSubjectOther + PLUS : EMPTY;  //synch [n] to vSubjectOther text box
         //remove final PLUS
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : EMPTY;
     }
