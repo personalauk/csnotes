@@ -22,28 +22,28 @@ TODO:
 <body ng-app="csnApp" ng-controller="csnController">
     
 <button onclick="copyNotes()">Copy</button>
-<input id="idNotesBox" type="text" readonly value="{{ notes() }}" style="width: 90%" />
+<input id="idNotesBox" type="text" readonly value="{{notes()}}" style="width: 90%" />
 <button ng-click="resetNotes()">Reset</button>
 
 
 <p>caller: 
 <!--    TODO: transferred + outbound + info-->
 <span ng-repeat="xc in dCallers">
-    <label>
-        <input type="radio" ng-model="vCaller" value="xc.val" />{{ xc.lab }} 
-<!--        <input type="radio" ng-model="vCaller" value="{{ xc.val }}" />{{ xc.lab }} -->
+    <label for="{{xc.id}}">
+        <input type="radio" id="{{xc.id}}" name="caller" ng-model="vCaller" ng-value="xc.val" />{{xc.lab}} 
     </label>
 </span>
 <!--TODO: named-->
 <input type="checkbox" ng-model="vAuthorised" />Auth
 <!--TODO: can't dpa + no answer-->
+...{{vCaller}}...
 </p>
 
     
 <p>subject: 
 <span ng-repeat="xs in dSubjects">
     <label>
-        <input type="checkbox" ng-model="xs.checked" />{{ xs.lab }} 
+        <input type="checkbox" ng-model="xs.checked" />{{xs.lab}} 
     </label>
 </span>
 <input type="text" ng-show="dSubjects[23].checked" ng-model="vSubjectOther" />
@@ -53,7 +53,7 @@ TODO:
 <p>action: 
 <span ng-repeat="xa in dActions">
     <label>
-        <input type="checkbox" ng-model="xa.checked" />{{ xa.lab }} 
+        <input type="checkbox" ng-model="xa.checked" />{{xa.lab}} 
     </label>
 </span>
 </p>
@@ -79,15 +79,15 @@ var app = angular.module('csnApp', []);
 app.controller('csnController', function($scope) {
 
     $scope.dCallers = [
-        {lab:'MR',          val:'MR'},
-        {lab:'MRS',         val:'MRS'},
-        {lab:'MR/MRS',      val:'MR/MRS'},
-        {lab:'MS',          val:'MS'},
-        {lab:'MISS',        val:'MISS'},
-        {lab:'DR',          val:'DR'},
-        {lab:'Org',         val:'Organiser'},
-        {lab:'Caller',      val:'Caller'},
-        {lab:'No Ans',      val:'No Answer'}
+        {id:'MR',       lab:'MR',          val:'MR'},
+        {id:'MRS',      lab:'MRS',         val:'MRS'},
+        {id:'MRMRS',    lab:'MR/MRS',      val:'MR/MRS'},
+        {id:'MS',       lab:'MS',          val:'MS'},
+        {id:'MISS',     lab:'MISS',        val:'MISS'},
+        {id:'DR',       lab:'DR',          val:'DR'},
+        {id:'Org',      lab:'Org',         val:'Organiser'},
+        {id:'Caller',   lab:'Caller',      val:'Caller'},
+        {id:'NoAns',    lab:'No Ans',      val:'No Answer'}
     ];
 
     $scope.dSubjects = [
