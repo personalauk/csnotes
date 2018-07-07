@@ -28,15 +28,28 @@ TODO:
 
 <p>caller: 
 <!--    TODO: transferred + outbound + info-->
-<span ng-repeat="xc in dCallers">
-    <label for="{{xc.id}}">
-        <input type="radio" id="{{xc.id}}" name="caller" ng-model="vCaller" ng-value="xc.val" />{{xc.lab}} 
-    </label>
-</span>
+<!--
+   angular.module('valueExample', [])
+     .controller('ExampleController', ['$scope', function($scope) {
+       $scope.names = ['pizza', 'unicorns', 'robots'];
+       $scope.my = { favorite: 'unicorns' };
+     }]);
+     <label ng-repeat="name in names" for="{{name}}">
+       {{name}}
+       <input type="radio"
+              ng-model="my.favorite"
+              ng-value="name"
+              id="{{name}}"
+              name="favorite">
+     </label>
+-->
+<label ng-repeat="xc in dCallers" for="caller_{{xc.id}}">
+    <input type="radio" ng-model="vCaller.favorite" ng-value="xc.val" id="caller_{{xc.id}}" name="caller" />{{xc.lab}} 
+</label>
 <!--TODO: named-->
 <input type="checkbox" ng-model="vAuthorised" />Auth
 <!--TODO: can't dpa + no answer-->
-...{{vCaller}}...
+...{{vCaller.favorite}}...
 </p>
 
     
@@ -53,7 +66,8 @@ TODO:
 <p>action: 
 <span ng-repeat="xa in dActions">
     <label>
-        <input type="checkbox" ng-model="xa.checked" />{{xa.lab}} 
+<!--                                                  ng-change="sectActions()"-->
+        <input type="checkbox" ng-model="xa.checked"  />{{xa.lab}} 
     </label>
 </span>
 </p>
@@ -127,7 +141,7 @@ app.controller('csnController', function($scope) {
     
     
     $scope.resetNotes = function() {
-        $scope.vCaller = EMPTY;
+        $scope.vCaller = { favorite: 'MRS' };
         $scope.vAuthorised = false;
         var sa;
         for (sa in $scope.dSubjects) {
@@ -145,7 +159,7 @@ app.controller('csnController', function($scope) {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
     }
     $scope.sectCaller = function() {
-        return ($scope.vCaller) ? $scope.vCaller + $scope.noteAuthorised() + ' called' : EMPTY;
+        return ($scope.vCaller.favorite) ? $scope.vCaller.favorite + $scope.noteAuthorised() + ' called' : EMPTY;
     }
     
         
@@ -189,6 +203,15 @@ app.controller('csnController', function($scope) {
         actions += ($scope.dActions[4].checked) ? $scope.dActions[4].desc + DOT : EMPTY;
         return actions;
     }
+/*
+    $scope.sectActions = function() { 
+        var actions = EMPTY;
+        for (sa=0; sa<dActions.length; sa++) {
+            actions += ($scope.dActions[sa].checked) ? $scope.dActions[sa].desc + DOT : EMPTY;
+        }
+        return actions;
+    }
+*/
 
     
     $scope.notes = function() {
