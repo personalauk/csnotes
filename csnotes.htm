@@ -20,7 +20,7 @@ TODO:
 <body ng-app="csnApp" ng-controller="csnController">
     
 <button onclick="copyNotes()">Copy</button>
-<input id="idNotesBox" type="text" readonly value="{{notes()}}" style="width: 90%" />
+<input id="idNotesBox" type="text" readonly="readonly" value="{{notes()}}" style="width: 90%" />
 <button ng-click="resetNotes()">Reset</button>
 
 
@@ -54,6 +54,7 @@ TODO:
 </span>
 </p>
     
+
     
 
 <script>
@@ -147,44 +148,15 @@ app.controller('csnController', function($scope) {
         
     $scope.sectSubjects = function() { 
         var subjects = EMPTY;
-        subjects += ($scope.dSubjects[0].checked) ? $scope.dSubjects[0].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[1].checked) ? $scope.dSubjects[1].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[2].checked) ? $scope.dSubjects[2].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[3].checked) ? $scope.dSubjects[3].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[4].checked) ? $scope.dSubjects[4].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[5].checked) ? $scope.dSubjects[5].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[6].checked) ? $scope.dSubjects[6].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[7].checked) ? $scope.dSubjects[7].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[8].checked) ? $scope.dSubjects[8].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[9].checked) ? $scope.dSubjects[9].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[10].checked) ? $scope.dSubjects[10].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[11].checked) ? $scope.dSubjects[11].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[12].checked) ? $scope.dSubjects[12].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[13].checked) ? $scope.dSubjects[13].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[14].checked) ? $scope.dSubjects[14].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[15].checked) ? $scope.dSubjects[15].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[16].checked) ? $scope.dSubjects[16].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[17].checked) ? $scope.dSubjects[17].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[18].checked) ? $scope.dSubjects[18].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[19].checked) ? $scope.dSubjects[19].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[20].checked) ? $scope.dSubjects[20].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[21].checked) ? $scope.dSubjects[21].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[22].checked) ? $scope.dSubjects[22].desc + PLUS : EMPTY;
-        subjects += ($scope.vSubjectOther) ? $scope.vSubjectOtherDesc + PLUS : EMPTY;
+        for (ss in $scope.dSubjects) {
+            subjects += ($scope.dSubjects[ss].checked) ? $scope.dSubjects[ss].desc + PLUS : EMPTY;
+        }
+        subjects += ($scope.vSubjectOther && $scope.vSubjectOtherDesc.length > 0) ? $scope.vSubjectOtherDesc + PLUS : EMPTY;
         //remove final PLUS
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : EMPTY;
     }
 
     
-    /*$scope.sectActions = function() { 
-        var actions = EMPTY;
-        actions += ($scope.dActions[0].checked) ? $scope.dActions[0].desc + DOT : EMPTY;  //must be explicit lines:
-        actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + DOT : EMPTY;  //doesn't work with angularjs in a for loop
-        actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + DOT : EMPTY;  //and not even if using ng-change
-        actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + DOT : EMPTY;
-        actions += ($scope.dActions[4].checked) ? $scope.dActions[4].desc + DOT : EMPTY;
-        return actions;
-    }*/
     $scope.sectActions = function() { 
         var actions = EMPTY;
         for (sa in $scope.dActions) {
