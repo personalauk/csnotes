@@ -8,11 +8,9 @@ csnotes.htm - AngularJS app to rapidly build customer service call notes
 Alan Lee 20180614
 -->
 
-<!--TODO: CSS-->
-
 <!--
 TODO:
-    Reset btn
+    CSS
     History button that opens text file & each note has datetime
 -->
     
@@ -28,28 +26,12 @@ TODO:
 
 <p>caller: 
 <!--    TODO: transferred + outbound + info-->
-<!--
-   angular.module('valueExample', [])
-     .controller('ExampleController', ['$scope', function($scope) {
-       $scope.names = ['pizza', 'unicorns', 'robots'];
-       $scope.my = { favorite: 'unicorns' };
-     }]);
-     <label ng-repeat="name in names" for="{{name}}">
-       {{name}}
-       <input type="radio"
-              ng-model="my.favorite"
-              ng-value="name"
-              id="{{name}}"
-              name="favorite">
-     </label>
--->
 <label ng-repeat="xc in dCallers" for="caller_{{xc.id}}">
-    <input type="radio" ng-model="vCaller.favorite" ng-value="xc.val" id="caller_{{xc.id}}" name="caller" />{{xc.lab}} 
+    <input type="radio" ng-model="vCaller.value" ng-value="xc.val" id="caller_{{xc.id}}" name="caller" />{{xc.lab}} 
 </label>
 <!--TODO: named-->
 <input type="checkbox" ng-model="vAuthorised" />Auth
-<!--TODO: can't dpa + no answer-->
-...{{vCaller.favorite}}...
+<!--TODO: can't dpa -->
 </p>
 
     
@@ -66,8 +48,7 @@ TODO:
 <p>action: 
 <span ng-repeat="xa in dActions">
     <label>
-<!--                                                  ng-change="sectActions()"-->
-        <input type="checkbox" ng-model="xa.checked"  />{{xa.lab}} 
+        <input type="checkbox" ng-model="xa.checked" />{{xa.lab}} 
     </label>
 </span>
 </p>
@@ -141,7 +122,7 @@ app.controller('csnController', function($scope) {
     
     
     $scope.resetNotes = function() {
-        $scope.vCaller = { favorite: 'MRS' };
+        $scope.vCaller = {value:'MR'};
         $scope.vAuthorised = false;
         var sa;
         for (sa in $scope.dSubjects) {
@@ -159,7 +140,7 @@ app.controller('csnController', function($scope) {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
     }
     $scope.sectCaller = function() {
-        return ($scope.vCaller.favorite) ? $scope.vCaller.favorite + $scope.noteAuthorised() + ' called' : EMPTY;
+        return ($scope.vCaller.value) ? $scope.vCaller.value + $scope.noteAuthorised() + ' called' : EMPTY;
     }
     
         
@@ -194,26 +175,24 @@ app.controller('csnController', function($scope) {
     }
 
     
-    $scope.sectActions = function() { 
+    /*$scope.sectActions = function() { 
         var actions = EMPTY;
         actions += ($scope.dActions[0].checked) ? $scope.dActions[0].desc + DOT : EMPTY;  //must be explicit lines:
         actions += ($scope.dActions[1].checked) ? $scope.dActions[1].desc + DOT : EMPTY;  //doesn't work with angularjs in a for loop
-        actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + DOT : EMPTY;
+        actions += ($scope.dActions[2].checked) ? $scope.dActions[2].desc + DOT : EMPTY;  //and not even if using ng-change
         actions += ($scope.dActions[3].checked) ? $scope.dActions[3].desc + DOT : EMPTY;
         actions += ($scope.dActions[4].checked) ? $scope.dActions[4].desc + DOT : EMPTY;
         return actions;
-    }
-/*
+    }*/
     $scope.sectActions = function() { 
         var actions = EMPTY;
-        for (sa=0; sa<dActions.length; sa++) {
+        for (sa in $scope.dActions) {
             actions += ($scope.dActions[sa].checked) ? $scope.dActions[sa].desc + DOT : EMPTY;
         }
         return actions;
     }
-*/
 
-    
+
     $scope.notes = function() {
         var all = EMPTY;
         all += ($scope.sectCaller().length > 0) ? $scope.sectCaller() + SEP : EMPTY;
