@@ -36,12 +36,13 @@ TODO:
 
     
 <p>subject: 
-<span ng-repeat="xs in dSubjects">
-    <label>
-        <input type="checkbox" ng-model="xs.checked" />{{xs.lab}} 
-    </label>
-</span>
-<input type="text" ng-show="dSubjects[23].checked" ng-model="vSubjectOther" />
+<label ng-repeat="xs in dSubjects">
+    <input type="checkbox" ng-model="xs.checked" />{{xs.lab}} 
+</label>
+<label>
+    <input type="checkbox" ng-model="vSubjectOther" />Other 
+    <input type="text" ng-show="vSubjectOther" ng-model="vSubjectOtherDesc" />
+</label>
 </p>
 
     
@@ -108,8 +109,7 @@ app.controller('csnController', function($scope) {
         {lab:'Complaint',   desc:'Complaint'},
         {lab:'Call List',   desc:'Call Listening'},
         {lab:'QA',          desc:'QA Report'},
-        {lab:'Deceased',    desc:'Deceased'},
-        {lab:'Other',       desc:EMPTY}
+        {lab:'Deceased',    desc:'Deceased'}
     ];
 
     $scope.dActions = [
@@ -128,7 +128,8 @@ app.controller('csnController', function($scope) {
         for (sa in $scope.dSubjects) {
             $scope.dSubjects[sa].checked = false;
         }
-        $scope.vSubjectOther = EMPTY;
+        $scope.vSubjectOther = false;
+        $scope.vSubjectOtherDesc = EMPTY;
         var ra;
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
@@ -169,7 +170,7 @@ app.controller('csnController', function($scope) {
         subjects += ($scope.dSubjects[20].checked) ? $scope.dSubjects[20].desc + PLUS : EMPTY;
         subjects += ($scope.dSubjects[21].checked) ? $scope.dSubjects[21].desc + PLUS : EMPTY;
         subjects += ($scope.dSubjects[22].checked) ? $scope.dSubjects[22].desc + PLUS : EMPTY;
-        subjects += ($scope.dSubjects[23].checked) ? $scope.vSubjectOther + PLUS : EMPTY;  //synch [n] to vSubjectOther text box
+        subjects += ($scope.vSubjectOther) ? $scope.vSubjectOtherDesc + PLUS : EMPTY;
         //remove final PLUS
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : EMPTY;
     }
