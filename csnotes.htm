@@ -24,14 +24,19 @@ TODO:
 <button ng-click="resetNotes()">Reset</button>
 
 
-<p>caller: 
-<!--    TODO: transferred + outbound + info-->
+<p>intro: 
+<label ng-repeat="xi in dIntros">
+    <input type="checkbox" ng-model="xi.checked" />{{xi.lab}} 
+</label>
+</p>
+    
+    
+<p>caller:
+<!--TODO: named-->
 <label ng-repeat="xc in dCallers" for="caller_{{xc.id}}">
     <input type="radio" ng-model="vCaller.value" ng-value="xc.val" id="caller_{{xc.id}}" name="caller" />{{xc.lab}} 
 </label>
-<!--TODO: named-->
 <input type="checkbox" ng-model="vAuthorised" />Auth
-<!--TODO: can't dpa -->
 </p>
 
     
@@ -75,6 +80,12 @@ var app = angular.module('csnApp', []);
     
 app.controller('csnController', function($scope) {
 
+    $scope.dIntros = [
+        {lab:'Transfer',    desc:'Transfer: '},
+        {lab:'Outbound',    desc:'Outbound: '},
+        {lab:'Info',        desc:'Info email: '}
+    ];
+
     $scope.dCallers = [
         {id:'MR',       lab:'MR',          val:'MR'},
         {id:'MRS',      lab:'MRS',         val:'MRS'},
@@ -117,17 +128,20 @@ app.controller('csnController', function($scope) {
         {lab:'Query',       desc:'Query'},
         {lab:'AROO',        desc:'AR Opt out'},
         {lab:'Unw AR',      desc:'Unwanted AR'},
-        {lab:'444',         desc:'four'},
-        {lab:'five',        desc:'five'}
+        {lab:"Can't DPA",   desc:"Unable to DPA"}
     ];
     
     
     $scope.resetNotes = function() {
+        var ri;
+        for (ri in $scope.dIntros) {
+            $scope.dIntros[ri].checked = false;
+        }
         $scope.vCaller = {value:'MR'};
         $scope.vAuthorised = false;
-        var sa;
-        for (sa in $scope.dSubjects) {
-            $scope.dSubjects[sa].checked = false;
+        var rs;
+        for (rs in $scope.dSubjects) {
+            $scope.dSubjects[rs].checked = false;
         }
         $scope.vSubjectOther = false;
         $scope.vSubjectOtherDesc = EMPTY;
@@ -135,6 +149,15 @@ app.controller('csnController', function($scope) {
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
         }
+    }
+
+    
+    $scope.sectIntros = function() { 
+        var intros = EMPTY;
+        for (si in $scope.dIntros) {
+            intros += ($scope.dIntros[si].checked) ? $scope.dIntros[si].desc : EMPTY;
+        }
+        return intros;
     }
 
     
@@ -168,6 +191,7 @@ app.controller('csnController', function($scope) {
 
     $scope.notes = function() {
         var all = EMPTY;
+        all += $scope.sectIntros();
         all += ($scope.sectCaller().length > 0) ? $scope.sectCaller() + SEP : EMPTY;
         all += ($scope.sectSubjects().length > 0) ? $scope.sectSubjects() + SEP : EMPTY;
         all += ($scope.sectActions().length > 0) ? $scope.sectActions() + SEP : EMPTY;
