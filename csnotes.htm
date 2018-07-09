@@ -71,6 +71,7 @@ function copyNotes() {
 }
 
 var EMPTY = '';     //empty string
+var SPACE = ' ';    //space
 var PLUS =  ' + ';  //builds lists of subjects
 var DOT =   '. ';   //builds lists of phrases
 var LIST =  ', ';   //builds lists
@@ -82,9 +83,9 @@ app.controller('csnController', function($scope) {
 
     $scope.dIntros = [
         {id:'Inb',      lab:'Inbound',  val:EMPTY},
-        {id:'Trans',    lab:'Transfer', val:'Transfer of '},
-        {id:'Outb',     lab:'Outbound', val:'Outbound to '},
-        {id:'Info',     lab:'Info',     val:'Info email: '}
+        {id:'Trans',    lab:'Transfer', val:'Transfer of'},
+        {id:'Outb',     lab:'Outbound', val:'Outbound to'},
+        {id:'Info',     lab:'Info',     val:'Info email:'}
     ];
 
     $scope.dCallers = [
@@ -151,6 +152,11 @@ app.controller('csnController', function($scope) {
     }
 
     
+    $scope.sectIntro = function() {
+        return ($scope.vIntro.value) ? $scope.vIntro.value + SPACE : EMPTY;
+    }
+
+    
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
     }
@@ -184,7 +190,7 @@ app.controller('csnController', function($scope) {
 
     $scope.notes = function() {
         var all = EMPTY;
-        all += $scope.vIntro.value;
+        all += $scope.sectIntro();
         all += ($scope.sectCaller().length > 0) ? $scope.sectCaller() + SEP : EMPTY;
         all += ($scope.sectSubjects().length > 0) ? $scope.sectSubjects() + SEP : EMPTY;
         all += ($scope.sectActions().length > 0) ? $scope.sectActions() + SEP : EMPTY;
