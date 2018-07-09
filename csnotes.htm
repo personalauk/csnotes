@@ -136,7 +136,7 @@ app.controller('csnController', function($scope) {
     
     
     $scope.resetNotes = function() {
-        $scope.vIntro = {value:EMPTY};
+        $scope.vIntro = {value:EMPTY};  //Inbound
         $scope.vCaller = {value:EMPTY};
         $scope.vAuthorised = false;
         var rs;
@@ -153,7 +153,7 @@ app.controller('csnController', function($scope) {
 
     
     $scope.sectIntro = function() {
-        return ($scope.vIntro.value) ? $scope.vIntro.value + SPACE : EMPTY;
+        return ($scope.vIntro.value) ? $scope.vIntro.value + SPACE : EMPTY;  //append space if a genuine intro
     }
 
     
