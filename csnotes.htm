@@ -195,7 +195,7 @@ app.controller('csnController', function($scope) {
         all += ($scope.sectSubjects().length > 0) ? $scope.sectSubjects() + SEP : EMPTY;
         all += ($scope.sectActions().length > 0) ? $scope.sectActions() + SEP : EMPTY;
         //remove final SEP, but not if only consists of intros because no SEP follows it
-        if (all != $scope.vIntro.value) {
+        if (all != $scope.sectIntro()) {
             all = (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;    
         }
         return all;
