@@ -25,8 +25,8 @@ TODO:
 
 
 <p>intro: 
-<label ng-repeat="xi in dIntros">
-    <input type="checkbox" ng-model="xi.checked" />{{xi.lab}} 
+<label ng-repeat="xi in dIntros" for="intro_{{xi.id}}">
+    <input type="radio" ng-model="vIntro.value" ng-value="xi.val" id="intro_{{xi.id}}" name="intro" />{{xi.lab}} 
 </label>
 </p>
     
@@ -36,7 +36,9 @@ TODO:
 <label ng-repeat="xc in dCallers" for="caller_{{xc.id}}">
     <input type="radio" ng-model="vCaller.value" ng-value="xc.val" id="caller_{{xc.id}}" name="caller" />{{xc.lab}} 
 </label>
-<input type="checkbox" ng-model="vAuthorised" />Auth
+<label>
+    <input type="checkbox" ng-model="vAuthorised" />Auth
+</label>
 </p>
 
     
@@ -52,11 +54,9 @@ TODO:
 
     
 <p>action: 
-<span ng-repeat="xa in dActions">
-    <label>
-        <input type="checkbox" ng-model="xa.checked" />{{xa.lab}} 
-    </label>
-</span>
+<label ng-repeat="xa in dActions">
+    <input type="checkbox" ng-model="xa.checked" />{{xa.lab}} 
+</label>
 </p>
     
 
@@ -81,20 +81,22 @@ var app = angular.module('csnApp', []);
 app.controller('csnController', function($scope) {
 
     $scope.dIntros = [
-        {lab:'Transfer',    desc:'Transfer: '},
-        {lab:'Outbound',    desc:'Outbound: '},
-        {lab:'Info',        desc:'Info email: '}
+        {id:'Inb',      lab:'Inbound',  val:EMPTY},
+        {id:'Trans',    lab:'Transfer', val:'Transfer of '},
+        {id:'Outb',     lab:'Outbound', val:'Outbound to '},
+        {id:'Info',     lab:'Info',     val:'Info email: '}
     ];
 
     $scope.dCallers = [
-        {id:'MR',       lab:'MR',          val:'MR'},
-        {id:'MRS',      lab:'MRS',         val:'MRS'},
-        {id:'MRMRS',    lab:'MR/MRS',      val:'MR/MRS'},
-        {id:'MS',       lab:'MS',          val:'MS'},
-        {id:'MISS',     lab:'MISS',        val:'MISS'},
-        {id:'DR',       lab:'DR',          val:'DR'},
-        {id:'Org',      lab:'Org',         val:'Organiser'},
-        {id:'Caller',   lab:'Caller',      val:'Caller'}
+        {id:'MR',       lab:'MR',       val:'MR'},
+        {id:'MRS',      lab:'MRS',      val:'MRS'},
+        {id:'MRMRS',    lab:'MR/MRS',   val:'MR/MRS'},
+        {id:'MS',       lab:'MS',       val:'MS'},
+        {id:'MISS',     lab:'MISS',     val:'MISS'},
+        {id:'DR',       lab:'DR',       val:'DR'},
+        {id:'Org',      lab:'Org',      val:'Organiser'},
+        {id:'Caller',   lab:'Caller',   val:'Caller'},
+        {id:'PH',       lab:'PH',       val:'PH'}
     ];
 
     $scope.dSubjects = [
@@ -133,11 +135,8 @@ app.controller('csnController', function($scope) {
     
     
     $scope.resetNotes = function() {
-        var ri;
-        for (ri in $scope.dIntros) {
-            $scope.dIntros[ri].checked = false;
-        }
-        $scope.vCaller = {value:'MR'};
+        $scope.vIntro = {value:EMPTY};
+        $scope.vCaller = {value:EMPTY};
         $scope.vAuthorised = false;
         var rs;
         for (rs in $scope.dSubjects) {
@@ -152,25 +151,18 @@ app.controller('csnController', function($scope) {
     }
 
     
-    $scope.sectIntros = function() { 
-        var intros = EMPTY;
-        for (si in $scope.dIntros) {
-            intros += ($scope.dIntros[si].checked) ? $scope.dIntros[si].desc : EMPTY;
-        }
-        return intros;
-    }
-
-    
     $scope.noteAuthorised = function() {
         return ($scope.vAuthorised) ? ' (Authorised by Organiser)' : EMPTY;
     }
     $scope.sectCaller = function() {
-        return ($scope.vCaller.value) ? $scope.vCaller.value + $scope.noteAuthorised() + ' called' : EMPTY;
+        var verb = ($scope.vIntro.value) ? EMPTY : ' called';  //append ' called' if inbound
+        return ($scope.vCaller.value) ? $scope.vCaller.value + $scope.noteAuthorised() + verb : EMPTY;
     }
     
         
     $scope.sectSubjects = function() { 
         var subjects = EMPTY;
+        var ss;
         for (ss in $scope.dSubjects) {
             subjects += ($scope.dSubjects[ss].checked) ? $scope.dSubjects[ss].desc + PLUS : EMPTY;
         }
@@ -182,6 +174,7 @@ app.controller('csnController', function($scope) {
     
     $scope.sectActions = function() { 
         var actions = EMPTY;
+        var sa;
         for (sa in $scope.dActions) {
             actions += ($scope.dActions[sa].checked) ? $scope.dActions[sa].desc + DOT : EMPTY;
         }
@@ -191,12 +184,15 @@ app.controller('csnController', function($scope) {
 
     $scope.notes = function() {
         var all = EMPTY;
-        all += $scope.sectIntros();
+        all += $scope.vIntro.value;
         all += ($scope.sectCaller().length > 0) ? $scope.sectCaller() + SEP : EMPTY;
         all += ($scope.sectSubjects().length > 0) ? $scope.sectSubjects() + SEP : EMPTY;
         all += ($scope.sectActions().length > 0) ? $scope.sectActions() + SEP : EMPTY;
-        //remove final SEP
-        return (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;
+        //remove final SEP, but not if only consists of intros because no SEP follows it
+        if (all != $scope.vIntro.value) {
+            all = (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;    
+        }
+        return all;
     }
 
     
