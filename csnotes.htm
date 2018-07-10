@@ -58,6 +58,29 @@ TODO:
     <input type="checkbox" ng-model="xa.checked" />{{xa.lab}} 
 </label>
 </p>
+
+    
+<p>discount: 
+<input type="radio" ng-model="vDiscount.value" ng-value="code" id="discount_code" name="discount" />
+<label>
+    <i>Code</i>
+    <input type="text" ng-model="vDiscountCode" />
+</label>
+<select ng-model="vDiscountPercent">
+    <option value="10">10%</option>
+    <option value="15">15%</option>
+    <option value="20">20%</option>
+</select>
+<label>
+    <i>Base</i>
+    <input type="text" ng-model="vDiscountBase" />
+</label>
+<input type="radio" ng-model="vDiscount.value" ng-value="manual" id="discount_manual" name="discount" />
+<label>
+    <i>Manual</i>
+    <input type="text" ng-model="vDiscountManual" /> = {{noteDiscountValue()}}
+</label>
+</p>
     
 
     
@@ -145,7 +168,7 @@ app.controller('csnController', function($scope) {
         {lab:'Alr Done',    desc:'Already Done by Colleague'}
     ];
     
-    
+
     $scope.resetNotes = function() {
         $scope.vIntro = {value:EMPTY};  //Inbound
         $scope.vCaller = {value:EMPTY};
@@ -160,6 +183,11 @@ app.controller('csnController', function($scope) {
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
         }
+        $scope.vDiscount = {value:'code'};
+        $scope.vDiscountCode = EMPTY;
+        $scope.vDiscountPercent = '15';
+        $scope.vDiscountBase = '0.00';
+        $scope.vDiscountManual = '0.00';
     }
 
     
@@ -196,6 +224,12 @@ app.controller('csnController', function($scope) {
             actions += ($scope.dActions[sa].checked) ? $scope.dActions[sa].desc + DOT : EMPTY;
         }
         return actions;
+    }
+
+
+    $scope.noteDiscountValue = function() {
+        //calculate discount (or use manula discount)
+        return ($scope.vDiscount.value == 'code') ? $scope.vDiscountBase * $scope.vDiscountPercent / 100 : $scope.vDiscountManual;
     }
 
 
