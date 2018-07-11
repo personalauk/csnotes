@@ -61,25 +61,33 @@ TODO:
 
     
 <p>discount: 
-<input type="radio" ng-model="vDiscount.value" ng-value="code" id="discount_code" name="discount" />
 <label>
+<!--    why not reseting?-->
+    <input type="radio" ng-model="vDiscount.value" ng-value="code" id="discount_code" name="discount" />
     <i>Code</i>
     <input type="text" ng-model="vDiscountCode" />
 </label>
-<select ng-model="vDiscountPercent">
-    <option value="10">10%</option>
-    <option value="15">15%</option>
-    <option value="20">20%</option>
-</select>
+<label>
+    <select ng-model="vDiscountPercent">
+        <option value="10">10%</option>
+        <option value="15">15%</option>
+        <option value="20">20%</option>
+        <option value="25">25%</option>
+    </select>
+</label>
 <label>
     <i>Base</i>
     <input type="text" ng-model="vDiscountBase" />
 </label>
-<input type="radio" ng-model="vDiscount.value" ng-value="manual" id="discount_manual" name="discount" />
 <label>
+    <input type="radio" ng-model="vDiscount.value" ng-value="manual" id="discount_manual" name="discount" />
     <i>Manual</i>
-    <input type="text" ng-model="vDiscountManual" /> = {{noteDiscountValue()}}
+    <input type="text" ng-model="vDiscountManual" />
 </label>
+    
+<br />
+{{vDiscount.value}}_{{vDiscountCode}}_{{vDiscountPercent}}_{{vDiscountBase}}_{{vDiscountManual}} = {{noteDiscountValue()}}
+    
 </p>
     
 
@@ -228,8 +236,14 @@ app.controller('csnController', function($scope) {
 
 
     $scope.noteDiscountValue = function() {
-        //calculate discount (or use manula discount)
-        return ($scope.vDiscount.value == 'code') ? $scope.vDiscountBase * $scope.vDiscountPercent / 100 : $scope.vDiscountManual;
+        //calculate discount (or use manual discount)
+        var disc = EMPTY;
+        if ($scope.vDiscount.value == 'code') {
+            disc = $scope.vDiscountBase * $scope.vDiscountPercent / 100;
+        } else {
+            disc = $scope.vDiscountManual;
+        }
+        return disc;
     }
 
 
