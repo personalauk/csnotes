@@ -48,7 +48,7 @@ TODO:
 </label>
 <label>
     <input type="checkbox" ng-model="vSubjectOther" />Other 
-    <input type="text" ng-show="vSubjectOther" ng-model="vSubjectOtherDesc" />
+    <input type="text" ng-show="vSubjectOther" ng-model="vSubjectOtherText" />
 </label>
 </p>
 
@@ -60,13 +60,7 @@ TODO:
 </p>
 
     
-<p>discount: 
-<label>
-<!--    why not reseting?-->
-    <input type="radio" ng-model="vDiscount.value" ng-value="code" id="discount_code" name="discount" />
-    <i>Code</i>
-    <input type="text" ng-model="vDiscountCode" />
-</label>
+<p ng-show="dSubjects[3].checked">discount: 
 <label>
     <select ng-model="vDiscountPercent">
         <option value="10">10%</option>
@@ -76,17 +70,24 @@ TODO:
     </select>
 </label>
 <label>
+    <i>Code</i>
+    <input type="text" ng-model="vDiscountCode" />
+</label>
+<label>
     <i>Base</i>
     <input type="text" ng-model="vDiscountBase" />
 </label>
 <label>
-    <input type="radio" ng-model="vDiscount.value" ng-value="manual" id="discount_manual" name="discount" />
+    <input type="checkbox" ng-model="vDiscountManual" />
     <i>Manual</i>
-    <input type="text" ng-model="vDiscountManual" />
+    <input type="text" ng-show="vDiscountManual" ng-model="vDiscountManualText" />
 </label>
-    
+<!--
 <br />
-{{vDiscount.value}}_{{vDiscountCode}}_{{vDiscountPercent}}_{{vDiscountBase}}_{{vDiscountManual}} = {{noteDiscountValue()}}
+{{vDiscountPercent}}_{{vDiscountCode}}_{{vDiscountBase}}_{{vDiscountManual}}_{{vDiscountManualText}} = {{noteDiscountValue() | currency:"£"}}
+<br />
+{{sectDiscount()}}
+-->
     
 </p>
     
@@ -110,7 +111,7 @@ var SEP =   ' | ';  //separates sections
     
 var app = angular.module('csnApp', []);
     
-app.controller('csnController', function($scope) {
+app.controller('csnController', function($scope, $filter) {
 
     $scope.dIntros = [
         {id:'Inb',      lab:'Inbound',  val:EMPTY},
@@ -137,22 +138,22 @@ app.controller('csnController', function($scope) {
         {lab:'Docs',        desc:'Documents'},
         {lab:'Disc',        desc:'Discount'},
         {lab:'PM',          desc:'Price Match'},
-        {lab:'Date',        desc:'Date'},
+        {lab:'Date',        desc:'Date'},           <!-- 05 -->
         {lab:'Dest',        desc:'Destination'},
         {lab:'Medical',     desc:'Medical'},
         {lab:'Refer',       desc:'Referral'},
         {lab:'ACO',         desc:'ACO'},
-        {lab:'ST->AMT',     desc:'ST->AMT'},
+        {lab:'ST->AMT',     desc:'ST->AMT'},        <!-- 10 -->
         {lab:'Cancel',      desc:'Cancellation'},
         {lab:'Age',         desc:'Age'},
         {lab:'Name',        desc:'Name'},
         {lab:'Addr',        desc:'Address'},
-        {lab:'Phone',       desc:'Phone'},
+        {lab:'Phone',       desc:'Phone'},          <!-- 15 -->
         {lab:'Email',       desc:'Email'},
         {lab:'PW',          desc:'Policy Wording'},
         {lab:'T&Cs',        desc:'T&Cs'},
         {lab:'Complaint',   desc:'Complaint'},
-        {lab:'Call List',   desc:'Call Listening'},
+        {lab:'Call List',   desc:'Call Listening'}, <!-- 20 -->
         {lab:'QA',          desc:'QA Report'},
         {lab:'Subscr',      desc:'Subscription'},
         {lab:'Deceased',    desc:'Deceased'}
@@ -186,16 +187,16 @@ app.controller('csnController', function($scope) {
             $scope.dSubjects[rs].checked = false;
         }
         $scope.vSubjectOther = false;
-        $scope.vSubjectOtherDesc = EMPTY;
+        $scope.vSubjectOtherText = EMPTY;
         var ra;
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
         }
-        $scope.vDiscount = {value:'code'};
         $scope.vDiscountCode = EMPTY;
         $scope.vDiscountPercent = '15';
         $scope.vDiscountBase = '0.00';
-        $scope.vDiscountManual = '0.00';
+        $scope.vDiscountManual = false;
+        $scope.vDiscountManualText = '0.00';
     }
 
     
@@ -219,7 +220,7 @@ app.controller('csnController', function($scope) {
         for (ss in $scope.dSubjects) {
             subjects += ($scope.dSubjects[ss].checked) ? $scope.dSubjects[ss].desc + PLUS : EMPTY;
         }
-        subjects += ($scope.vSubjectOther && $scope.vSubjectOtherDesc.length > 0) ? $scope.vSubjectOtherDesc + PLUS : EMPTY;
+        subjects += ($scope.vSubjectOther && $scope.vSubjectOtherText.length > 0) ? $scope.vSubjectOtherText + PLUS : EMPTY;
         //remove final PLUS
         return (subjects.length > 0) ? subjects.substr(0, subjects.length - PLUS.length) : EMPTY;
     }
@@ -237,13 +238,14 @@ app.controller('csnController', function($scope) {
 
     $scope.noteDiscountValue = function() {
         //calculate discount (or use manual discount)
-        var disc = EMPTY;
-        if ($scope.vDiscount.value == 'code') {
-            disc = $scope.vDiscountBase * $scope.vDiscountPercent / 100;
-        } else {
-            disc = $scope.vDiscountManual;
-        }
-        return disc;
+        return ($scope.vDiscountManual) ? $scope.vDiscountManualText : $scope.vDiscountBase * $scope.vDiscountPercent / 100;
+    }
+    $scope.sectDiscount = function() {
+        return ($scope.vDiscountManual) ? 
+            'Refund = ' + $filter('currency')($scope.vDiscountManualText, '£', 2) 
+        : 
+            $scope.vDiscountPercent + '% Discount "' + $scope.vDiscountCode + '" on base price ' + $filter('number')($scope.vDiscountBase, 2) + ' = REFUND ' + $filter('currency')($scope.noteDiscountValue(), '£', 2)
+        ;
     }
 
 
@@ -252,11 +254,21 @@ app.controller('csnController', function($scope) {
         all += $scope.sectIntro();
         all += ($scope.sectCaller().length > 0) ? $scope.sectCaller() + SEP : EMPTY;
         all += ($scope.sectSubjects().length > 0) ? $scope.sectSubjects() + SEP : EMPTY;
-        all += ($scope.sectActions().length > 0) ? $scope.sectActions() + SEP : EMPTY;
+/*
+        //don't think this is needed:
         //remove final SEP, but not if only consists of intros because no SEP follows it
         if (all != $scope.sectIntro()) {
             all = (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;    
         }
+*/
+        //standalone actions:
+        all += $scope.sectActions();
+        //subject-specific actions:
+        if ($scope.dSubjects[3].checked) {
+            all += $scope.sectDiscount();
+        }
+        //price:
+        //docs:
         return all;
     }
 
