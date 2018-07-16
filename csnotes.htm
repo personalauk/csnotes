@@ -88,10 +88,23 @@ TODO:
 <br />
 {{sectDiscount()}}
 -->
-    
 </p>
     
 
+<p>custom: 
+<label>
+    <textarea ng-model="vCustom" rows="3" cols="80"></textarea>
+</label>
+</p>
+
+    
+<p>docs: 
+<label ng-repeat="xd in dDoc" for="doc_{{xd.id}}">
+    <input type="radio" ng-model="vDoc.value" ng-value="xd.val" id="doc_{{xd.id}}" name="doc" />{{xd.lab}} 
+</label>
+</p>
+    
+    
     
 
 <script>
@@ -177,6 +190,15 @@ app.controller('csnController', function($scope, $filter) {
         {lab:'Alr Done',    desc:'Already Done by Colleague'}
     ];
     
+    $scope.dDoc = [
+        {id:'Na',       lab:'n/a',          val:EMPTY},
+        {id:'Email',    lab:'Email',        val:'Sent by Email'},
+        {id:'StdPost',  lab:'Std Post',     val:'Sent by Standard Post'},
+        {id:'1stPost',  lab:'1st C Post',   val:'Sent by 1st Class Post'},
+        {id:'OthPost',  lab:'Other Post',   val:'Sent by Other Post'},
+        {id:'Nr',       lab:'Not Req',      val:'Docs not required'}
+    ];
+
 
     $scope.resetNotes = function() {
         $scope.vIntro = {value:EMPTY};  //Inbound
@@ -197,6 +219,8 @@ app.controller('csnController', function($scope, $filter) {
         $scope.vDiscountBase = '0.00';
         $scope.vDiscountManual = false;
         $scope.vDiscountManualText = '0.00';
+        $scope.vCustom = EMPTY;
+        $scope.vDoc = {value:EMPTY};
     }
 
     
@@ -244,11 +268,16 @@ app.controller('csnController', function($scope, $filter) {
         return ($scope.vDiscountManual) ? 
             'Refund = ' + $filter('currency')($scope.vDiscountManualText, '£', 2) 
         : 
-            $scope.vDiscountPercent + '% Discount "' + $scope.vDiscountCode + '" on base price ' + $filter('number')($scope.vDiscountBase, 2) + ' = REFUND ' + $filter('currency')($scope.noteDiscountValue(), '£', 2)
+            $scope.vDiscountPercent + '% Discount "' + $filter('uppercase')($scope.vDiscountCode) + '" on base price ' + $filter('number')($scope.vDiscountBase, 2) + ' = REFUND ' + $filter('currency')($scope.noteDiscountValue(), '£', 2)
         ;
     }
 
 
+    $scope.sectDoc = function() {
+        return ($scope.vDoc.value) ? SEP + $scope.vDoc.value + DOT : EMPTY;   
+    }
+
+    
     $scope.notes = function() {
         var all = EMPTY;
         all += $scope.sectIntro();
@@ -265,10 +294,13 @@ app.controller('csnController', function($scope, $filter) {
         all += $scope.sectActions();
         //subject-specific actions:
         if ($scope.dSubjects[3].checked) {
-            all += $scope.sectDiscount();
+            all += $scope.sectDiscount() + DOT;
         }
+        //custom actions:
+        all += $scope.vCustom;
         //price:
         //docs:
+        all += $scope.sectDoc();
         return all;
     }
 
