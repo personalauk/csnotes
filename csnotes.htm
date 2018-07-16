@@ -108,7 +108,6 @@ TODO:
 <label>
     <i>AF</i>
     <select ng-model="vPriceAf">
-        <option value="FOC">FOC</option>
         <option value="AF £5">£5</option>
         <option value="AF £10">£10</option>
         <option value="Waived AF (COP)">WAF (COP)</option>
@@ -139,10 +138,12 @@ function copyNotes() {
 
 var EMPTY = '';     //empty string
 var SPACE = ' ';    //space
-var PLUS =  ' + ';  //builds lists of subjects
+var PLUS =  ' + ';  //builds lists of subjects / price component summing
 var DOT =   '. ';   //builds lists of phrases
 var LIST =  ', ';   //builds lists
-var SUM =   '+';    //price summing
+var SUM =   '+';    //price breakdown summing
+var LESS =  '-';    //price breakdown subtraction
+var MINUS = ' - ';  //price component subtraction
 var SEP =   ' | ';  //separates sections
     
 var app = angular.module('csnApp', []);
@@ -300,9 +301,20 @@ app.controller('csnController', function($scope, $filter) {
     }
 
 
-    //TODO - simple to start with
+    //TODO - under dev. FOC checkbox
     $scope.sectPrice = function() {
-        return 'AP ' + $scope.vPriceAp1 + SUM + $scope.vPriceAp2 + SUM + $scope.vPriceAp3 + PLUS + $scope.vPriceAf;   
+        var price = SEP;
+        if (($scope.vPriceAp1.length == 0) && ($scope.vPriceAp2.length == 0) && ($scope.vPriceAp3.length == 0)) {
+            price = 'NO AP';
+        } else {
+            price = 'AP ';
+            price += ($scope.vPriceAp1.length > 0) ? $filter('number')($scope.vPriceAp1, 2) : EMPTY;
+            price += ($scope.vPriceAp2.length > 0) ? SUM + $filter('number')($scope.vPriceAp2, 2) : EMPTY;
+            price += ($scope.vPriceAp3.length > 0) ? SUM + $filter('number')($scope.vPriceAp3, 2) : EMPTY;
+        }
+        price += ($scope.noteDiscountValue().length > 0) ? ' - Discount ' + $filter('number')($scope.noteDiscountValue(), 2) : EMPTY;
+        price += PLUS + $scope.vPriceAf;
+        return price;
     }
 
     
