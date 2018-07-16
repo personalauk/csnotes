@@ -98,6 +98,28 @@ TODO:
 </p>
 
     
+<p>price: 
+<label>
+    <i>AP</i>
+    <input type="text" ng-model="vPriceAp1" />
+    <input type="text" ng-model="vPriceAp2" />
+    <input type="text" ng-model="vPriceAp3" />
+</label>
+<label>
+    <i>AF</i>
+    <select ng-model="vPriceAf">
+        <option value="FOC">FOC</option>
+        <option value="AF £5">£5</option>
+        <option value="AF £10">£10</option>
+        <option value="Waived AF (COP)">WAF (COP)</option>
+        <option value="Waived AF (Agent Error)">WAF (Ag Err)</option>
+        <option value="Waived AF (Auth by )">WAF (Auth by )</option>
+        <option value="Waived AF (Already Paid)">WAF (Alr Paid)</option>
+    </select>
+</label>
+</p>
+
+    
 <p>docs: 
 <label ng-repeat="xd in dDoc" for="doc_{{xd.id}}">
     <input type="radio" ng-model="vDoc.value" ng-value="xd.val" id="doc_{{xd.id}}" name="doc" />{{xd.lab}} 
@@ -120,6 +142,7 @@ var SPACE = ' ';    //space
 var PLUS =  ' + ';  //builds lists of subjects
 var DOT =   '. ';   //builds lists of phrases
 var LIST =  ', ';   //builds lists
+var SUM =   '+';    //price summing
 var SEP =   ' | ';  //separates sections
     
 var app = angular.module('csnApp', []);
@@ -220,6 +243,10 @@ app.controller('csnController', function($scope, $filter) {
         $scope.vDiscountManual = false;
         $scope.vDiscountManualText = '0.00';
         $scope.vCustom = EMPTY;
+        $scope.vPriceAp1 = EMPTY;
+        $scope.vPriceAp2 = EMPTY;
+        $scope.vPriceAp3 = EMPTY;
+        $scope.vPriceAf = 'AF £10';
         $scope.vDoc = {value:EMPTY};
     }
 
@@ -273,6 +300,12 @@ app.controller('csnController', function($scope, $filter) {
     }
 
 
+    //TODO - simple to start with
+    $scope.sectPrice = function() {
+        return 'AP ' + $scope.vPriceAp1 + SUM + $scope.vPriceAp2 + SUM + $scope.vPriceAp3 + PLUS + $scope.vPriceAf;   
+    }
+
+    
     $scope.sectDoc = function() {
         return ($scope.vDoc.value) ? SEP + $scope.vDoc.value + DOT : EMPTY;   
     }
@@ -299,6 +332,7 @@ app.controller('csnController', function($scope, $filter) {
         //custom actions:
         all += $scope.vCustom;
         //price:
+        all += $scope.sectPrice();
         //docs:
         all += $scope.sectDoc();
         return all;
