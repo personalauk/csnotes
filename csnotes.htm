@@ -303,38 +303,33 @@ app.controller('csnController', function($scope, $filter) {
 
     //TODO - under dev. FOC checkbox
     $scope.sectPrice = function() {
-        var price = SEP;
+        var price = EMPTY;
         if (($scope.vPriceAp1.length == 0) && ($scope.vPriceAp2.length == 0) && ($scope.vPriceAp3.length == 0)) {
-            price = 'NO AP';
+            price += 'NO AP';
         } else {
-            price = 'AP ';
+            price += 'AP ';
             price += ($scope.vPriceAp1.length > 0) ? $filter('number')($scope.vPriceAp1, 2) : EMPTY;
-            price += ($scope.vPriceAp2.length > 0) ? SUM + $filter('number')($scope.vPriceAp2, 2) : EMPTY;
-            price += ($scope.vPriceAp3.length > 0) ? SUM + $filter('number')($scope.vPriceAp3, 2) : EMPTY;
+            price += ($scope.vPriceAp2.length > 0) ? ($scope.vPriceAp2 < 0) ? $filter('number')($scope.vPriceAp2, 2) : SUM + $filter('number')($scope.vPriceAp2, 2) : EMPTY;
+            price += ($scope.vPriceAp3.length > 0) ? ($scope.vPriceAp3 < 0) ? $filter('number')($scope.vPriceAp3, 2) : SUM + $filter('number')($scope.vPriceAp3, 2) : EMPTY;
         }
-        price += ($scope.noteDiscountValue().length > 0) ? ' - Discount ' + $filter('number')($scope.noteDiscountValue(), 2) : EMPTY;
+        price += ($scope.dSubjects[3].checked) ? ' - Discount ' + $filter('number')($scope.noteDiscountValue(), 2) : EMPTY;
         price += PLUS + $scope.vPriceAf;
         return price;
     }
 
     
     $scope.sectDoc = function() {
-        return ($scope.vDoc.value) ? SEP + $scope.vDoc.value + DOT : EMPTY;   
+        return ($scope.vDoc.value) ? $scope.vDoc.value + DOT : EMPTY;   
     }
 
     
     $scope.notes = function() {
         var all = EMPTY;
+        //caller:
         all += $scope.sectIntro();
         all += ($scope.sectCaller().length > 0) ? $scope.sectCaller() + SEP : EMPTY;
+        //subjects:
         all += ($scope.sectSubjects().length > 0) ? $scope.sectSubjects() + SEP : EMPTY;
-/*
-        //don't think this is needed:
-        //remove final SEP, but not if only consists of intros because no SEP follows it
-        if (all != $scope.sectIntro()) {
-            all = (all.length > 0) ? all.substr(0, all.length - SEP.length) : EMPTY;    
-        }
-*/
         //standalone actions:
         all += $scope.sectActions();
         //subject-specific actions:
@@ -342,11 +337,20 @@ app.controller('csnController', function($scope, $filter) {
             all += $scope.sectDiscount() + DOT;
         }
         //custom actions:
-        all += $scope.vCustom;
+        all += ($scope.vCustom.length > 0) ? $scope.vCustom : EMPTY;
+        if (all.substr(-1 * SEP.length) != SEP) {  //add separator if not already present
+            all += SEP;
+        }
         //price:
         all += $scope.sectPrice();
+        if (all.substr(-1 * SEP.length) != SEP) {  //add separator if not already present
+            all += SEP;
+        }
         //docs:
         all += $scope.sectDoc();
+        if (all.substr(-1 * SEP.length) == SEP) {  //remove superfluous separator
+            all = all.substr(0, all.length - SEP.length);
+        }
         return all;
     }
 
