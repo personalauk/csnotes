@@ -123,6 +123,8 @@ TODO:
 <label ng-repeat="xd in dDoc" for="doc_{{xd.id}}">
     <input type="radio" ng-model="vDoc.value" ng-value="xd.val" id="doc_{{xd.id}}" name="doc" />{{xd.lab}} 
 </label>
+<br />
+{{vDoc.value | currency:"£"}}
 </p>
     
     
@@ -314,6 +316,13 @@ app.controller('csnController', function($scope, $filter) {
         }
         price += ($scope.dSubjects[3].checked) ? ' - Discount ' + $filter('number')($scope.noteDiscountValue(), 2) : EMPTY;
         price += PLUS + $scope.vPriceAf;
+        if ($scope.vDoc.value == 'Sent by Standard Post') {
+            price += PLUS + 'Post 1.99';
+        } else if ($scope.vDoc.value == 'Sent by 1st Class Post') {
+            price += PLUS + 'Post 5.00';
+        }
+        //TODO:
+        price += ' = £___';
         return price;
     }
 
