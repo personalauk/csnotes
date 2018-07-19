@@ -313,12 +313,12 @@ app.controller('csnController', function($scope, $filter) {
         } else {
             price += 'AP ';
             //TODO unify condition?
-            price += ($scope.vPriceAp1.length > 0) ? $filter('number')($scope.vPriceAp1, 2) : EMPTY;
-            price += ($scope.vPriceAp2.length > 0) ? ($scope.vPriceAp2 < 0) ? $filter('number')($scope.vPriceAp2, 2) : SUM + $filter('number')($scope.vPriceAp2, 2) : EMPTY;
-            price += ($scope.vPriceAp3.length > 0) ? ($scope.vPriceAp3 < 0) ? $filter('number')($scope.vPriceAp3, 2) : SUM + $filter('number')($scope.vPriceAp3, 2) : EMPTY;
-            total += (typeof($scope.vPriceAp1) == 'number') ? $scope.vPriceAp1 - 0 : 0;  // "- 0" converts to type number
-            total += (typeof($scope.vPriceAp2) == 'number') ? $scope.vPriceAp2 - 0 : 0;
-            total += (typeof($scope.vPriceAp3) == 'number') ? $scope.vPriceAp3 - 0 : 0;
+            price += (isFinite($scope.vPriceAp1) && ($scope.vPriceAp1.length > 0)) ? $filter('number')($scope.vPriceAp1, 2) : EMPTY;
+            price += (isFinite($scope.vPriceAp2) && ($scope.vPriceAp2.length > 0)) ? ($scope.vPriceAp2 < 0) ? $filter('number')($scope.vPriceAp2, 2) : SUM + $filter('number')($scope.vPriceAp2, 2) : EMPTY;
+            price += (isFinite($scope.vPriceAp3) && ($scope.vPriceAp3.length > 0)) ? ($scope.vPriceAp3 < 0) ? $filter('number')($scope.vPriceAp3, 2) : SUM + $filter('number')($scope.vPriceAp3, 2) : EMPTY;
+            total += (isFinite($scope.vPriceAp1)) ? $scope.vPriceAp1 - 0 : 0;  // "- 0" converts to type number
+            total += (isFinite($scope.vPriceAp2)) ? $scope.vPriceAp2 - 0 : 0;
+            total += (isFinite($scope.vPriceAp3)) ? $scope.vPriceAp3 - 0 : 0;
         }
         if ($scope.dSubjects[3].checked) {
             price += ' - Discount ' + $filter('number')($scope.noteDiscountValue(), 2);
