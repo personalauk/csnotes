@@ -232,7 +232,7 @@ app.controller('csnController', function($scope, $filter) {
 
 
     $scope.resetNotes = function() {
-        $scope.vIntro = {value:EMPTY};  //Inbound
+        $scope.vIntro = {value:EMPTY};  //=Inbound
         $scope.vCaller = {value:EMPTY};
         $scope.vAuthorised = false;
         var rs;
@@ -247,9 +247,9 @@ app.controller('csnController', function($scope, $filter) {
         }
         $scope.vDiscountCode = EMPTY;
         $scope.vDiscountPercent = '15';
-        $scope.vDiscountBase = '0.00';
+        $scope.vDiscountBase = '0.00';  //TODO empty?
         $scope.vDiscountManual = false;
-        $scope.vDiscountManualText = '0.00';
+        $scope.vDiscountManualText = '0.00';  //TODO empty?
         $scope.vCustom = EMPTY;
         $scope.vPriceAp1 = EMPTY;
         $scope.vPriceAp2 = EMPTY;
@@ -297,7 +297,7 @@ app.controller('csnController', function($scope, $filter) {
 
     $scope.noteDiscountValue = function() {
         //calculate discount (or use manual discount)
-        return ($scope.vDiscountManual) ? $scope.vDiscountManualText : $scope.vDiscountBase * $scope.vDiscountPercent / 100;
+        return ($scope.vDiscountManual) ? $scope.vDiscountManualText : $scope.vDiscountBase * $scope.vDiscountPercent / 100;  //TODO refine
     }
     $scope.sectDiscount = function() {
         return ($scope.vDiscountManual) ? 
@@ -309,6 +309,15 @@ app.controller('csnController', function($scope, $filter) {
 
 
     //TODO - under dev. FOC checkbox
+    $scope.notePriceAp1Value = function() {
+        return $filter(NUM)($scope.vPriceAp1, 2);
+    }
+    $scope.notePriceAp2Value = function() {
+        return $filter(NUM)($scope.vPriceAp2, 2);
+    }
+    $scope.notePriceAp3Value = function() {
+        return $filter(NUM)($scope.vPriceAp3, 2);
+    }
     $scope.sectPrice = function() {
         var price = EMPTY;
         var total = 0.00;
@@ -316,16 +325,15 @@ app.controller('csnController', function($scope, $filter) {
             price += 'NO AP';
         } else {
             price += 'AP ';
-            //TODO unify condition?
-            price += (isFinite($scope.vPriceAp1) && ($filter(NUM)($scope.vPriceAp1, 2) != 0)) ? $filter(NUM)($scope.vPriceAp1, 2) : EMPTY;
-            price += (isFinite($scope.vPriceAp2) && ($filter(NUM)($scope.vPriceAp2, 2) != 0)) ? ($scope.vPriceAp2 < 0) ? $filter(NUM)($scope.vPriceAp2, 2) : SUM + $filter(NUM)($scope.vPriceAp2, 2) : EMPTY;
-            price += (isFinite($scope.vPriceAp3) && ($filter(NUM)($scope.vPriceAp3, 2) != 0)) ? ($scope.vPriceAp3 < 0) ? $filter(NUM)($scope.vPriceAp3, 2) : SUM + $filter(NUM)($scope.vPriceAp3, 2) : EMPTY;
-            total += (isFinite($scope.vPriceAp1)) ? $scope.vPriceAp1 - 0 : 0;  // "- 0" converts to type number
-            total += (isFinite($scope.vPriceAp2)) ? $scope.vPriceAp2 - 0 : 0;
-            total += (isFinite($scope.vPriceAp3)) ? $scope.vPriceAp3 - 0 : 0;
+            price += (isFinite($scope.vPriceAp1) && ($scope.notePriceAp1Value() != 0)) ? $scope.notePriceAp1Value() : EMPTY;
+            price += (isFinite($scope.vPriceAp2) && ($scope.notePriceAp2Value() != 0)) ? ($scope.notePriceAp2Value() < 0) ? $scope.notePriceAp2Value() : SUM + $scope.notePriceAp2Value() : EMPTY;
+            price += (isFinite($scope.vPriceAp3) && ($scope.notePriceAp3Value() != 0)) ? ($scope.notePriceAp3Value() < 0) ? $scope.notePriceAp3Value() : SUM + $scope.notePriceAp3Value() : EMPTY;
+            total += (isFinite($scope.vPriceAp1)) ? $scope.notePriceAp1Value() - 0 : 0;  // "- 0" converts to type number
+            total += (isFinite($scope.vPriceAp2)) ? $scope.notePriceAp2Value() - 0 : 0;
+            total += (isFinite($scope.vPriceAp3)) ? $scope.notePriceAp3Value() - 0 : 0;
         }
         if ($scope.dSubjects[3].checked) {
-            price += ' - Discount ' + $filter(NUM)($scope.noteDiscountValue(), 2);
+            price += ' - Discount ' + $filter(NUM)($scope.noteDiscountValue(), 2);  //TODO
             total -= (isFinite($scope.noteDiscountValue())) ? $scope.noteDiscountValue() - 0 : 0;  //TODO
         }
         price += PLUS + $scope.vPriceAf;
