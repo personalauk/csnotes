@@ -108,8 +108,8 @@ TODO:
 <label>
     <i>AF</i>
     <select ng-model="vPriceAf">
-        <option value="AF £5">£5</option>
-        <option value="AF £10">£10</option>
+        <option value="AF 5">£5</option>
+        <option value="AF 10">£10</option>
         <option value="Waived AF (COP)">WAF (COP)</option>
         <option value="Waived AF (Agent Error)">WAF (Ag Err)</option>
         <option value="Waived AF (Authorised by )">WAF (Auth by )</option>
@@ -147,7 +147,11 @@ var SUM =   '+';    //price breakdown summing
 var LESS =  '-';    //price breakdown subtraction
 var MINUS = ' - ';  //price component subtraction
 var SEP =   ' | ';  //separates sections
-var NUM =   'number';   //type number AND angularjs filter
+//angularjs filters
+var NUM =   'number';
+var CUR =   'currency';
+var POUND = '£';
+var UPPER = 'uppercase';
     
 var app = angular.module('csnApp', []);
     
@@ -250,7 +254,7 @@ app.controller('csnController', function($scope, $filter) {
         $scope.vPriceAp1 = EMPTY;
         $scope.vPriceAp2 = EMPTY;
         $scope.vPriceAp3 = EMPTY;
-        $scope.vPriceAf = 'AF £10';
+        $scope.vPriceAf = 'AF 10';
         $scope.vDoc = {value:EMPTY};
     }
 
@@ -297,9 +301,9 @@ app.controller('csnController', function($scope, $filter) {
     }
     $scope.sectDiscount = function() {
         return ($scope.vDiscountManual) ? 
-            'Refund = ' + $filter('currency')($scope.vDiscountManualText, '£', 2) 
+            'Refund = ' + $filter(CUR)($scope.vDiscountManualText, POUND, 2) 
         : 
-            $scope.vDiscountPercent + '% Discount "' + $filter('uppercase')($scope.vDiscountCode) + '" on base price ' + $filter('number')($scope.vDiscountBase, 2) + ' = REFUND ' + $filter('currency')($scope.noteDiscountValue(), '£', 2)
+            $scope.vDiscountPercent + '% Discount "' + $filter(UPPER)($scope.vDiscountCode) + '" on base price ' + $filter(NUM)($scope.vDiscountBase, 2) + ' = REFUND ' + $filter(CUR)($scope.noteDiscountValue(), POUND, 2)
         ;
     }
 
@@ -313,28 +317,28 @@ app.controller('csnController', function($scope, $filter) {
         } else {
             price += 'AP ';
             //TODO unify condition?
-            price += (isFinite($scope.vPriceAp1) && ($scope.vPriceAp1.length > 0)) ? $filter('number')($scope.vPriceAp1, 2) : EMPTY;
-            price += (isFinite($scope.vPriceAp2) && ($scope.vPriceAp2.length > 0)) ? ($scope.vPriceAp2 < 0) ? $filter('number')($scope.vPriceAp2, 2) : SUM + $filter('number')($scope.vPriceAp2, 2) : EMPTY;
-            price += (isFinite($scope.vPriceAp3) && ($scope.vPriceAp3.length > 0)) ? ($scope.vPriceAp3 < 0) ? $filter('number')($scope.vPriceAp3, 2) : SUM + $filter('number')($scope.vPriceAp3, 2) : EMPTY;
+            price += (isFinite($scope.vPriceAp1) && ($filter(NUM)($scope.vPriceAp1, 2) != 0)) ? $filter(NUM)($scope.vPriceAp1, 2) : EMPTY;
+            price += (isFinite($scope.vPriceAp2) && ($filter(NUM)($scope.vPriceAp2, 2) != 0)) ? ($scope.vPriceAp2 < 0) ? $filter(NUM)($scope.vPriceAp2, 2) : SUM + $filter(NUM)($scope.vPriceAp2, 2) : EMPTY;
+            price += (isFinite($scope.vPriceAp3) && ($filter(NUM)($scope.vPriceAp3, 2) != 0)) ? ($scope.vPriceAp3 < 0) ? $filter(NUM)($scope.vPriceAp3, 2) : SUM + $filter(NUM)($scope.vPriceAp3, 2) : EMPTY;
             total += (isFinite($scope.vPriceAp1)) ? $scope.vPriceAp1 - 0 : 0;  // "- 0" converts to type number
             total += (isFinite($scope.vPriceAp2)) ? $scope.vPriceAp2 - 0 : 0;
             total += (isFinite($scope.vPriceAp3)) ? $scope.vPriceAp3 - 0 : 0;
         }
         if ($scope.dSubjects[3].checked) {
-            price += ' - Discount ' + $filter('number')($scope.noteDiscountValue(), 2);
-            total -= (typeof($scope.noteDiscountValue()) == 'number') ? $scope.noteDiscountValue() - 0 : 0;
+            price += ' - Discount ' + $filter(NUM)($scope.noteDiscountValue(), 2);
+            total -= (isFinite($scope.noteDiscountValue())) ? $scope.noteDiscountValue() - 0 : 0;  //TODO
         }
         price += PLUS + $scope.vPriceAf;
-        if ($scope.vPriceAf == 'AF £5') {
+        if ($scope.vPriceAf == 'AF 5') {
             total += 5.00;
-        } else if ($scope.vPriceAf == 'AF £10') {
+        } else if ($scope.vPriceAf == 'AF 10') {
             total += 10.00;
         }
         if ($scope.vDoc.value == 'Sent by Standard Post') {
             price += PLUS + 'Post 1.99';
             total += 1.99;
         } else if ($scope.vDoc.value == 'Sent by 1st Class Post') {
-            price += PLUS + 'Post 5.00';
+            price += PLUS + 'Post 5';
             total += 5.00;
         }
         //TODO: prefix REFUND when -ve
