@@ -297,7 +297,7 @@ app.controller('csnController', function($scope, $filter) {
 
     $scope.noteDiscountValue = function() {
         //calculate discount (or use manual discount)
-        return ($scope.vDiscountManual) ? $scope.vDiscountManualText : $scope.vDiscountBase * $scope.vDiscountPercent / 100;  //TODO refine
+        return ($scope.vDiscountManual) ? $filter(NUM)($scope.vDiscountManualText, 2) : $filter(NUM)($scope.vDiscountBase * $scope.vDiscountPercent / 100, 2);
     }
     $scope.sectDiscount = function() {
         return ($scope.vDiscountManual) ? 
@@ -321,7 +321,7 @@ app.controller('csnController', function($scope, $filter) {
     $scope.sectPrice = function() {
         var price = EMPTY;
         var total = 0.00;
-        if (($scope.vPriceAp1.length == 0) && ($scope.vPriceAp2.length == 0) && ($scope.vPriceAp3.length == 0)) {
+        if (($scope.notePriceAp1Value() == 0) && ($scope.notePriceAp2Value() == 0) && ($scope.notePriceAp3Value() == 0)) {
             price += 'NO AP';
         } else {
             price += 'AP ';
@@ -333,8 +333,8 @@ app.controller('csnController', function($scope, $filter) {
             total += (isFinite($scope.vPriceAp3)) ? $scope.notePriceAp3Value() - 0 : 0;
         }
         if ($scope.dSubjects[3].checked) {
-            price += ' - Discount ' + $filter(NUM)($scope.noteDiscountValue(), 2);  //TODO
-            total -= (isFinite($scope.noteDiscountValue())) ? $scope.noteDiscountValue() - 0 : 0;  //TODO
+            price += ' - Discount ' + $scope.noteDiscountValue();
+            total -= (isFinite($scope.noteDiscountValue())) ? $scope.noteDiscountValue() - 0 : 0;
         }
         price += PLUS + $scope.vPriceAf;
         if ($scope.vPriceAf == 'AF 5') {
