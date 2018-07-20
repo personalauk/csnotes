@@ -247,9 +247,9 @@ app.controller('csnController', function($scope, $filter) {
         }
         $scope.vDiscountCode = EMPTY;
         $scope.vDiscountPercent = '15';
-        $scope.vDiscountBase = '0.00';  //TODO empty?
+        $scope.vDiscountBase = EMPTY;  //TODO empty?
         $scope.vDiscountManual = false;
-        $scope.vDiscountManualText = '0.00';  //TODO empty?
+        $scope.vDiscountManualText = EMPTY;  //TODO empty?
         $scope.vCustom = EMPTY;
         $scope.vPriceAp1 = EMPTY;
         $scope.vPriceAp2 = EMPTY;
@@ -349,8 +349,8 @@ app.controller('csnController', function($scope, $filter) {
             price += PLUS + 'Post 5';
             total += 5.00;
         }
-        //TODO: prefix REFUND when -ve
-        price += ' = £' + total.toFixed(2);
+        //prefix REFUND when -ve
+        price += ' = ' + (total.toFixed(2) < 0) ? 'REFUND £' + (-1 * total).toFixed(2) : POUND + total.toFixed(2);
         return price;
     }
 
