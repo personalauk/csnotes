@@ -118,6 +118,14 @@ TODO:
         <option value="Waived AF (Already Paid)">WAF (Alr Paid)</option>
     </select>
 </label>
+<label>
+    <input type="checkbox" ng-model="vPriceFoc" />
+    <i>FOC</i>
+</label>
+<label>
+    <input type="checkbox" ng-model="vPriceHide" />
+    <i>Hide</i>
+</label>
 </p>
 
     
@@ -259,6 +267,8 @@ app.controller('csnController', function($scope, $filter) {
         $scope.vPriceAp2 = EMPTY;
         $scope.vPriceAp3 = EMPTY;
         $scope.vPriceAf = 'AF 10';
+        $scope.vPriceFoc = false;
+        $scope.vPriceHide = false;
         $scope.vDoc = {value:EMPTY};
     }
 
@@ -312,7 +322,6 @@ app.controller('csnController', function($scope, $filter) {
     }
 
 
-    //TODO - under dev. FOC checkbox
     $scope.notePriceAp1Value = function() {
         return $filter(NUM)($scope.vPriceAp1, 2);
     }
@@ -325,41 +334,49 @@ app.controller('csnController', function($scope, $filter) {
     $scope.sectPrice = function() {
         var price = EMPTY;
         var total = 0.00;
-        if (($scope.notePriceAp1Value() == 0) && ($scope.notePriceAp2Value() == 0) && ($scope.notePriceAp3Value() == 0)) {
-            price += 'NO AP';
-        } else {
-            price += 'AP ';
-            price += (isFinite($scope.vPriceAp1) && ($scope.notePriceAp1Value() != 0)) ? $scope.notePriceAp1Value() : EMPTY;
-            price += (isFinite($scope.vPriceAp2) && ($scope.notePriceAp2Value() != 0)) ? ($scope.notePriceAp2Value() < 0) ? $scope.notePriceAp2Value() : SUM + $scope.notePriceAp2Value() : EMPTY;
-            price += (isFinite($scope.vPriceAp3) && ($scope.notePriceAp3Value() != 0)) ? ($scope.notePriceAp3Value() < 0) ? $scope.notePriceAp3Value() : SUM + $scope.notePriceAp3Value() : EMPTY;
-            total += (isFinite($scope.vPriceAp1)) ? $scope.notePriceAp1Value() - 0 : 0;  // "- 0" converts to type number
-            total += (isFinite($scope.vPriceAp2)) ? $scope.notePriceAp2Value() - 0 : 0;
-            total += (isFinite($scope.vPriceAp3)) ? $scope.notePriceAp3Value() - 0 : 0;
+        if (! ($scope.vPriceFoc || $scope.vPriceHide)) {
+            
+            if (($scope.notePriceAp1Value() == 0) && ($scope.notePriceAp2Value() == 0) && ($scope.notePriceAp3Value() == 0)) {
+                price += 'NO AP';
+            } else {
+                price += 'AP ';
+                price += (isFinite($scope.vPriceAp1) && ($scope.notePriceAp1Value() != 0)) ? $scope.notePriceAp1Value() : EMPTY;
+                price += (isFinite($scope.vPriceAp2) && ($scope.notePriceAp2Value() != 0)) ? ($scope.notePriceAp2Value() < 0) ? $scope.notePriceAp2Value() : SUM + $scope.notePriceAp2Value() : EMPTY;
+                price += (isFinite($scope.vPriceAp3) && ($scope.notePriceAp3Value() != 0)) ? ($scope.notePriceAp3Value() < 0) ? $scope.notePriceAp3Value() : SUM + $scope.notePriceAp3Value() : EMPTY;
+                total += (isFinite($scope.vPriceAp1)) ? $scope.notePriceAp1Value() - 0 : 0;  // "- 0" converts to type number
+                total += (isFinite($scope.vPriceAp2)) ? $scope.notePriceAp2Value() - 0 : 0;
+                total += (isFinite($scope.vPriceAp3)) ? $scope.notePriceAp3Value() - 0 : 0;
+            }
+            if ($scope.dSubjects[3].checked) {
+                price += ' - Discount ' + $scope.noteDiscountValue();
+                total -= (isFinite($scope.noteDiscountValue())) ? $scope.noteDiscountValue() - 0 : 0;
+            }
+            price += PLUS + $scope.vPriceAf;
+            if ($scope.vPriceAf == 'AF 5') {
+                total += 5.00;
+            } else if ($scope.vPriceAf == 'AF 10') {
+                total += 10.00;
+            }
+            if ($scope.vDoc.value == 'Sent by Standard Post') {
+                price += PLUS + 'Post 1.99';
+                total += 1.99;
+            } else if ($scope.vDoc.value == 'Sent by 1st Class Post') {
+                price += PLUS + 'Post 5';
+                total += 5.00;
+            }
+            price += ' = ';
+            //prefix REFUND when -ve
+            price += (total.toFixed(2) < 0) ?
+                'REFUND £' + (-1 * total).toFixed(2) 
+            : 
+                POUND + total.toFixed(2)
+            ;
+ 
+        } else if ($scope.vPriceFoc && ! $scope.vPriceHide) {
+            
+            price = 'FOC';
+            
         }
-        if ($scope.dSubjects[3].checked) {
-            price += ' - Discount ' + $scope.noteDiscountValue();
-            total -= (isFinite($scope.noteDiscountValue())) ? $scope.noteDiscountValue() - 0 : 0;
-        }
-        price += PLUS + $scope.vPriceAf;
-        if ($scope.vPriceAf == 'AF 5') {
-            total += 5.00;
-        } else if ($scope.vPriceAf == 'AF 10') {
-            total += 10.00;
-        }
-        if ($scope.vDoc.value == 'Sent by Standard Post') {
-            price += PLUS + 'Post 1.99';
-            total += 1.99;
-        } else if ($scope.vDoc.value == 'Sent by 1st Class Post') {
-            price += PLUS + 'Post 5';
-            total += 5.00;
-        }
-        price += ' = ';
-        //prefix REFUND when -ve
-        price += (total.toFixed(2) < 0) ?
-            'REFUND £' + (-1 * total).toFixed(2) 
-        : 
-            POUND + total.toFixed(2)
-        ;
         return price;
     }
 
