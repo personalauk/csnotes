@@ -126,6 +126,7 @@ TODO:
     <input type="checkbox" ng-model="vPriceHide" />
     <i>Hide</i>
 </label>
+<button ng-click="resetPrice()">Reset</button>
 </p>
 
     
@@ -263,15 +264,18 @@ app.controller('csnController', function($scope, $filter) {
         $scope.vDiscountManual = false;
         $scope.vDiscountManualText = EMPTY;
         $scope.vCustom = EMPTY;
+        $scope.resetPrice();
+        $scope.vDoc = {value:EMPTY};
+    }
+    $scope.resetPrice = function() {
         $scope.vPriceAp1 = EMPTY;
         $scope.vPriceAp2 = EMPTY;
         $scope.vPriceAp3 = EMPTY;
         $scope.vPriceAf = 'AF 10';
         $scope.vPriceFoc = false;
         $scope.vPriceHide = false;
-        $scope.vDoc = {value:EMPTY};
     }
-
+    
     
     $scope.sectIntro = function() {
         return ($scope.vIntro.value) ? $scope.vIntro.value + SPACE : EMPTY;  //append space if a genuine intro
