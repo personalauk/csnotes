@@ -61,6 +61,7 @@ TODO:
 
     
 <p ng-show="dSubjects[3].checked">discount: 
+<!--TODO: local rest btn-->
 <label>
     <select ng-model="vDiscountPercent">
         <option value="10">10%</option>
@@ -99,6 +100,7 @@ TODO:
 
     
 <p>price: 
+<!--TODO: local rest btn-->
 <label>
     <i>AP</i>
     <input type="text" ng-model="vPriceAp1" ng-change="sectPrice()" />
@@ -123,8 +125,10 @@ TODO:
 <label ng-repeat="xd in dDoc" for="doc_{{xd.id}}">
     <input type="radio" ng-model="vDoc.value" ng-value="xd.val" id="doc_{{xd.id}}" name="doc" />{{xd.lab}} 
 </label>
+<!--
 <br />
 {{vDoc.value | currency:"£"}}
+-->
 </p>
     
     
@@ -247,9 +251,9 @@ app.controller('csnController', function($scope, $filter) {
         }
         $scope.vDiscountCode = EMPTY;
         $scope.vDiscountPercent = '15';
-        $scope.vDiscountBase = EMPTY;  //TODO empty?
+        $scope.vDiscountBase = EMPTY;
         $scope.vDiscountManual = false;
-        $scope.vDiscountManualText = EMPTY;  //TODO empty?
+        $scope.vDiscountManualText = EMPTY;
         $scope.vCustom = EMPTY;
         $scope.vPriceAp1 = EMPTY;
         $scope.vPriceAp2 = EMPTY;
@@ -349,8 +353,13 @@ app.controller('csnController', function($scope, $filter) {
             price += PLUS + 'Post 5';
             total += 5.00;
         }
+        price += ' = ';
         //prefix REFUND when -ve
-        price += ' = ' + (total.toFixed(2) < 0) ? 'REFUND £' + (-1 * total).toFixed(2) : POUND + total.toFixed(2);
+        price += (total.toFixed(2) < 0) ?
+            'REFUND £' + (-1 * total).toFixed(2) 
+        : 
+            POUND + total.toFixed(2)
+        ;
         return price;
     }
 
