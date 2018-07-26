@@ -60,7 +60,7 @@ TODO:
 </p>
 
     
-<p ng-show="dSubjects[3].checked">discount: 
+<p ng-show="dSubjects[sDisc].checked">discount: 
 <!--TODO: local rest btn-->
 <label>
     <select ng-model="vDiscountPercent">
@@ -100,7 +100,6 @@ TODO:
 
     
 <p>price: 
-<!--TODO: local rest btn-->
 <label>
     <i>AP</i>
     <input type="text" ng-model="vPriceAp1" ng-change="sectPrice()" />
@@ -215,6 +214,30 @@ app.controller('csnController', function($scope, $filter) {
         {lab:'Subscr',      desc:'Subscription'},
         {lab:'Deceased',    desc:'Deceased'}
     ];
+    $scope.sDept        = 0;
+    $scope.sAr          = 1;
+    $scope.sDocs        = 2;
+    $scope.sDisc        = 3;
+    $scope.sPm          = 4;
+    $scope.sDate        = 5;
+    $scope.sDest        = 6;
+    $scope.sMedical     = 7;
+    $scope.sRefer       = 8;
+    $scope.sAco         = 9;
+    $scope.sStAmt       = 10;
+    $scope.sCancel      = 11;
+    $scope.sAge         = 12;
+    $scope.sName        = 13;
+    $scope.sAddr        = 14;
+    $scope.sPhone       = 15;
+    $scope.sEmail       = 16;
+    $scope.sPw          = 17;
+    $scope.sTAndCs      = 18;
+    $scope.sComplaint   = 19;
+    $scope.sCallList    = 20;
+    $scope.sQa          = 21;
+    $scope.sSubscr      = 22;
+    $scope.sDeceased    = 23;
 
     $scope.dActions = [
         {lab:'Query',       desc:'Query'},
@@ -351,7 +374,7 @@ app.controller('csnController', function($scope, $filter) {
                 total += (isFinite($scope.vPriceAp2)) ? $scope.notePriceAp2Value() - 0 : 0;
                 total += (isFinite($scope.vPriceAp3)) ? $scope.notePriceAp3Value() - 0 : 0;
             }
-            if ($scope.dSubjects[3].checked) {
+            if ($scope.dSubjects[$scope.sDisc].checked) {
                 price += ' - Discount ' + $scope.noteDiscountValue();
                 total -= (isFinite($scope.noteDiscountValue())) ? $scope.noteDiscountValue() - 0 : 0;
             }
@@ -400,7 +423,7 @@ app.controller('csnController', function($scope, $filter) {
         //standalone actions:
         all += $scope.sectActions();
         //subject-specific actions:
-        if ($scope.dSubjects[3].checked) {
+        if ($scope.dSubjects[$scope.sDisc].checked) {
             all += $scope.sectDiscount() + DOT;
         }
         //custom actions:
