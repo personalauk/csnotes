@@ -61,7 +61,6 @@ TODO:
 
     
 <p ng-show="dSubjects[sDisc].checked">discount: 
-<!--TODO: local rest btn-->
 <label>
     <select ng-model="vDiscountPercent">
         <option value="10">10%</option>
@@ -83,6 +82,7 @@ TODO:
     <i>Manual</i>
     <input type="text" ng-show="vDiscountManual" ng-model="vDiscountManualText" />
 </label>
+<button ng-click="resetDiscount()">Reset</button>
 <!--
 <br />
 {{vDiscountPercent}}_{{vDiscountCode}}_{{vDiscountBase}}_{{vDiscountManual}}_{{vDiscountManualText}} = {{noteDiscountValue() | currency:"£"}}
@@ -281,14 +281,17 @@ app.controller('csnController', function($scope, $filter) {
         for (ra in $scope.dActions) {
             $scope.dActions[ra].checked = false;
         }
+        $scope.resetDiscount();
+        $scope.vCustom = EMPTY;
+        $scope.resetPrice();
+        $scope.vDoc = {value:EMPTY};
+    }
+    $scope.resetDiscount = function() {
         $scope.vDiscountCode = EMPTY;
         $scope.vDiscountPercent = '15';
         $scope.vDiscountBase = EMPTY;
         $scope.vDiscountManual = false;
         $scope.vDiscountManualText = EMPTY;
-        $scope.vCustom = EMPTY;
-        $scope.resetPrice();
-        $scope.vDoc = {value:EMPTY};
     }
     $scope.resetPrice = function() {
         $scope.vPriceAp1 = EMPTY;
