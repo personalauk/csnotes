@@ -96,7 +96,6 @@ TODO:
 <label>
     <textarea ng-model="vCustom" rows="3" cols="80"></textarea>
 </label>
-<button ng-click="resetCustom()">Reset</button> 
 </p>
 
     
@@ -283,8 +282,8 @@ app.controller('csnController', function($scope, $filter) {
             $scope.dActions[ra].checked = false;
         }
         $scope.resetDiscount();
-       $scope.resetCustom();
-       $scope.resetPrice();
+        $scope.vCustom = EMPTY;
+        $scope.resetPrice();
         $scope.vDoc = {value:EMPTY};
     }
     $scope.resetDiscount = function() {
@@ -294,10 +293,7 @@ app.controller('csnController', function($scope, $filter) {
         $scope.vDiscountManual = false;
         $scope.vDiscountManualText = EMPTY;
     }
-    $scope.resetCustom = function() {
-        $scope.vCustom = EMPTY;
-}
-        $scope.resetPrice = function() {
+    $scope.resetPrice = function() {
         $scope.vPriceAp1 = EMPTY;
         $scope.vPriceAp2 = EMPTY;
         $scope.vPriceAp3 = EMPTY;
